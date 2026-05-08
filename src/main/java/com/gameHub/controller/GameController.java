@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
 import com.gameHub.domain.Game;
+import com.gameHub.exception.NoGameFoundException;
 import com.gameHub.service.GameService;
 
 @Controller
@@ -40,6 +42,12 @@ public class GameController {
 		Game gameByNo = gameService.getGameByNo(gameNo);
 		model.addAttribute("gameByNo", gameByNo);
 		return "game";
+	}
+	
+	@ExceptionHandler(value={(NoGameFoundException.class)})
+	public String noGameFoundHandler(NoGameFoundException exception, Model model) {
+		model.addAttribute("invalidGameNo", exception.getInvalidGameNo());
+		return "noGameFoundException";
 	}
 	
 	@GetMapping("/game/new")
