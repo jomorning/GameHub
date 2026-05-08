@@ -10,9 +10,16 @@
 </head>
 <body>
 	<c:url value="/user/search" var="usersURL"/>
-	<a href="${usersURL}">전체 사용자 목록</a>
-	
+	<a href="${usersURL}">[ADMIN] 전체 사용자 목록</a>
+	<br>
 	<c:url value="/user/new" var="newUserURL"/>
 	<a href="${newUserURL}">회원 가입</a>
+	<br>
+	<c:url value="/game/search" var="gamesURL"/>
+	<a href="${gamesURL}">게임 목록</a>
+	<br>
+	<c:url value="/game/new" var="newGameURL"/>
+	<a href="${newGameURL}">[ADMIN] 게임 등록</a>
+	<br>
 </body>
 </html>

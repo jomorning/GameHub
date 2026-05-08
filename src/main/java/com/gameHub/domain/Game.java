@@ -7,10 +7,11 @@ public class Game {
 	private int gameNo;
 	private String gameName;
 	private String genre;
+	private Integer gameAgeRating;
+	private String gameDescription;
 	private String gameDeveloper;
 	private String gamePublisher;
 	private LocalDate gameReleaseDate;
-	private String gameAgeRating;
 	
 	public Game() {
 	}
@@ -39,6 +40,22 @@ public class Game {
 		this.genre = genre;
 	}
 
+	public Integer getGameAgeRating() {
+		return gameAgeRating;
+	}
+
+	public void setGameAgeRating(Integer gameAgeRating) {
+		this.gameAgeRating = gameAgeRating;
+	}
+
+	public String getGameDescription() {
+		return gameDescription;
+	}
+
+	public void setGameDescription(String gameDescription) {
+		this.gameDescription = gameDescription;
+	}
+
 	public String getGameDeveloper() {
 		return gameDeveloper;
 	}
@@ -61,14 +78,6 @@ public class Game {
 
 	public void setGameReleaseDate(LocalDate gameReleaseDate) {
 		this.gameReleaseDate = gameReleaseDate;
-	}
-
-	public String getGameAgeRating() {
-		return gameAgeRating;
-	}
-
-	public void setGameAgeRating(String gameAgeRating) {
-		this.gameAgeRating = gameAgeRating;
 	}
 
 }

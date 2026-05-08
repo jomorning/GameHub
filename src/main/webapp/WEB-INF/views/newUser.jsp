@@ -14,6 +14,7 @@
 	
 	<c:url value="/user" var="newUserURL"/>
 	<form:form modelAttribute="newUser" action="${newUserURL}">
+		<h3>회원 가입</h3>
 		<p>사용할 아이디: <form:input path="userId"/>
 		<p>비밀번호: <form:password path="userPw"/>
 		<p>이름: <form:input path="userName"/>
@@ -22,7 +23,6 @@
 		<p>이메일: <form:input type="email" path="userEmail"/>
 		<br>
 		<button>회원 가입</button>
-		
 	</form:form>
 </body>
 </html>

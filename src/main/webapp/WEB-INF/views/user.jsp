@@ -13,6 +13,7 @@
 	<c:url value="/user/search" var="usersURL"/>
 	<a href="${usersURL}">전체 사용자 목록</a>
 	<br>
+	<h3>사용자 상세 정보</h3>
 	<p>사용자 번호: ${userByNo.userNo}
 	<p>사용자 ID: ${userByNo.userId}
 	<p>사용자 PW: ${userByNo.userPw}
