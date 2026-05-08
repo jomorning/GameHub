@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans:beans
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:component-scan base-package="com.gameHub.repository, com.gameHub.service" />
+	
+	<context:property-placeholder location="classpath:db.properties"/>
+	
+	<beans:bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+    	<beans:constructor-arg ref="hikariConfig" />
+	</beans:bean>
+	
+	<beans:bean id="jdbcTemplate"
+		class="org.springframework.jdbc.core.JdbcTemplate">
+		<beans:property name="dataSource" ref="dataSource" />
+	</beans:bean>
+	
+	<beans:bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+    	<beans:property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
+    	<beans:property name="jdbcUrl" value="${db.url}" />
+    	<beans:property name="username" value="${db.username}" />
+    	<beans:property name="password" value="${db.password}" />
+    
+    	<beans:property name="maximumPoolSize" value="10" />
+    	<beans:property name="minimumIdle" value="5" />
+    	<beans:property name="connectionTimeout" value="30000" />
+    	<beans:property name="idleTimeout" value="600000" />
+    	<beans:property name="maxLifetime" value="1800000" />
+	</beans:bean>
+	
+	<!-- Spring Security 비밀번호 암호화 -->
+	<!-- <beans:bean id="passwordEncoder" class="org.springframework.security.crypto.password.NoOpPasswordEncoder" factory-method="getInstance" /> -->
+</beans:beans>
