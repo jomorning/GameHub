@@ -11,7 +11,10 @@ public class Post {
 	private String postTitle;
 	private String postContent;
 	private Integer viewCount;
+	private Integer likeCount;
+	private Integer commentCount;
 	private LocalDateTime postCreatedAt;
+	private LocalDateTime postUpdatedAt;
 	
 	public Post() {
 	}
@@ -72,12 +75,36 @@ public class Post {
 		this.viewCount = viewCount;
 	}
 
+	public Integer getLikeCount() {
+		return likeCount;
+	}
+
+	public void setLikeCount(Integer likeCount) {
+		this.likeCount = likeCount;
+	}
+
+	public Integer getCommentCount() {
+		return commentCount;
+	}
+
+	public void setCommentCount(Integer commentCount) {
+		this.commentCount = commentCount;
+	}
+
 	public LocalDateTime getPostCreatedAt() {
 		return postCreatedAt;
 	}
 
 	public void setPostCreatedAt(LocalDateTime postCreatedAt) {
 		this.postCreatedAt = postCreatedAt;
+	}
+
+	public LocalDateTime getPostUpdatedAt() {
+		return postUpdatedAt;
+	}
+
+	public void setPostUpdatedAt(LocalDateTime postUpdatedAt) {
+		this.postUpdatedAt = postUpdatedAt;
 	}
 	
 }

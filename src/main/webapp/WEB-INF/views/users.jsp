@@ -16,8 +16,8 @@
 	
 	<form:form modelAttribute="userSearchDTO" method="GET" action="${searchUserURL}">
 		<h3>사용자 정보 검색</h3>
-			<label for="info">상세정보 검색</label>
-			<form:radiobutton path="searchMode" id="info" value="info"/><br>
+			<label for="detail">상세정보 검색</label>
+			<form:radiobutton path="searchMode" id="detail" value="detail"/><br>
 			ID 검색: <form:input path="userId"/><br>
 			이름 검색: <form:input path="userName"/><br>
 			이메일 검색: <form:input path="userEmail"/><br>

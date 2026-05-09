@@ -46,7 +46,7 @@ public class UserRepositoryImpl implements UserRepository {
 	}
 
 	@Override
-	public List<User> searchUsersByInfo(UserSearchDTO userSearchDTO) {
+	public List<User> searchUsersByDetail(UserSearchDTO userSearchDTO) {
 		StringBuilder SQL = new StringBuilder("SELECT * FROM app_user WHERE 1=1");
 		List<Object> params = new ArrayList<>();
 
@@ -65,8 +65,8 @@ public class UserRepositoryImpl implements UserRepository {
 			params.add(userSearchDTO.getUserEmail() + "%");
 		}
 
-		List<User> usersByInfo = template.query(SQL.toString(), new UserRowMapper(), params.toArray());
-		return usersByInfo;
+		List<User> usersByDetail = template.query(SQL.toString(), new UserRowMapper(), params.toArray());
+		return usersByDetail;
 	}
 
 	@Override

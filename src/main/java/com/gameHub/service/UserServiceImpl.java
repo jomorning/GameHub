@@ -39,8 +39,8 @@ public class UserServiceImpl implements UserService {
 		List<User> usersBySearch = null;
 		
 		switch (userSearchDTO.getSearchMode()) {
-		case "info":
-			usersBySearch = userRepository.searchUsersByInfo(userSearchDTO);
+		case "detail":
+			usersBySearch = userRepository.searchUsersByDetail(userSearchDTO);
 			break;
 		case "condition":
 			usersBySearch = userRepository.searchUsersByCondition(userSearchDTO);

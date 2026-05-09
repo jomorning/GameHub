@@ -1,12 +1,12 @@
-package com.gameHub.repository;
+package com.gameHub.service;
 
 import java.util.List;
 
 import com.gameHub.domain.Post;
 import com.gameHub.domain.PostSearchDTO;
 
-public interface PostRepository {
-
+public interface PostService {
+	
 	List<Post> searchPosts(PostSearchDTO postSearchDTO);
 	
 	Post getPostByNo(int postNo);
@@ -32,7 +32,7 @@ public interface PostRepository {
 	void setNewPost(Post newPost);
 	
 	void setEditPost(Post editPost);
-	
+
 	void setDeletePost(int postNo);
-	
+
 }

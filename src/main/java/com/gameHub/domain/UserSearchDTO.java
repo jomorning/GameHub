@@ -15,7 +15,7 @@ public class UserSearchDTO {
 	private LocalDateTime endCreatedTime;
 	
 	public UserSearchDTO() {
-		searchMode = "info";
+		searchMode = "detail";
 	}
 
 	public String getSearchMode() {
