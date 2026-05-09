@@ -6,13 +6,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>NoUserFound</title>
+<title>NoPostFound</title>
 </head>
 <body>
-	<h3>NoUserFound 예외 발생</h3>
-	존재하지 않는 사용자 번호: ${invalidUserNo}
+	<h3>NoPostFound 예외 발생</h3>
+	존재하지 않는 게시글 번호: ${invalidPostNo}
 	<br>
-	<c:url value="/user/search" var="usersURL"/>
-	<a href="${usersURL}">사용자 목록</a>
+	<c:url value="/post/search" var="postsURL"/>
+	<a href="${postsURL}">게시글 목록</a>
 </body>
 </html>

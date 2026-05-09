@@ -2,6 +2,7 @@ package com.gameHub.repository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -55,6 +56,11 @@ public class GameRepositoryImpl implements GameRepository {
 	public List<Game> getAllGames() {
 		String SQL = "SELECT * FROM game";
 		List<Game> allGames = template.query(SQL, new GameRowMapper());
+		
+		if (allGames.isEmpty()) {
+			return Collections.emptyList();
+		}
+		
 		return allGames;
 	}
 
@@ -72,9 +78,27 @@ public class GameRepositoryImpl implements GameRepository {
 	}
 
 	@Override
+	public Game getGameByName(String gameName) {
+		String SQL = "SELECT * FROM game WHERE game_name = ?";
+		List<Game> gameByNameTemp = template.query(SQL, new GameRowMapper(), gameName);
+		
+		if (gameByNameTemp.isEmpty()) {
+			return null;
+		}
+		
+		Game gameByName = gameByNameTemp.get(0);
+		return gameByName;
+	}
+
+	@Override
 	public List<Game> getGamesByGenre(String genre) {
 		String SQL = "SELECT * FROM game WHERE game_genre = ?";
 		List<Game> gamesByGenre = template.query(SQL, new GameRowMapper(), genre);
+		
+		if (gamesByGenre.isEmpty()) {
+			return Collections.emptyList();
+		}
+		
 		return gamesByGenre;
 	}
 
@@ -82,6 +106,11 @@ public class GameRepositoryImpl implements GameRepository {
 	public List<Game> getGamesByDeveloper(String gameDeveloper) {
 		String SQL = "SELECT * FROM game WHERE game_developer = ?";
 		List<Game> gamesByDeveloper = template.query(SQL, new GameRowMapper(), gameDeveloper);
+		
+		if (gamesByDeveloper.isEmpty()) {
+			return Collections.emptyList();
+		}
+		
 		return gamesByDeveloper;
 	}
 
@@ -89,12 +118,24 @@ public class GameRepositoryImpl implements GameRepository {
 	public List<Game> getGamesByPublisher(String gamePublisher) {
 		String SQL = "SELECT * FROM game WHERE game_publisher = ?";
 		List<Game> gamesByPublisher = template.query(SQL, new GameRowMapper(), gamePublisher);
-		return gamesByPublisher;	}
+		
+		if (gamesByPublisher.isEmpty()) {
+			return Collections.emptyList();
+		}
+		
+		return gamesByPublisher;
+		
+	}
 
 	@Override
 	public List<Game> getGamesByReleaseDate(LocalDate startDate, LocalDate endDate) {
 		String SQL = "SELECT * FROM game WHERE game_release_date BETWEEN ? AND ?";
 		List<Game> gamesByReleaseDate = template.query(SQL, new GameRowMapper(), startDate, endDate);
+		
+		if (gamesByReleaseDate.isEmpty()) {
+			return Collections.emptyList();
+		}
+		
 		return gamesByReleaseDate;
 	}
 
@@ -102,6 +143,11 @@ public class GameRepositoryImpl implements GameRepository {
 	public List<Game> getGamesByAgeRating(LocalDate userBirthDate) {
 		String SQL = "SELECT * FROM game WHERE game_age_rating <= ?";
 		List<Game> gamesByAgeRating = template.query(SQL, new GameRowMapper(), userBirthDate);
+		
+		if (gamesByAgeRating.isEmpty()) {
+			return Collections.emptyList();
+		}
+		
 		return gamesByAgeRating;
 	}
 

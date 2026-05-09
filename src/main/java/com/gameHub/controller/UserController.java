@@ -24,11 +24,6 @@ public class UserController {
 	@Autowired
 	UserService userService;
 	
-	@GetMapping("/")
-	public String main() {
-		return "main";
-	}
-	
 	@GetMapping("/user/search")
 	public String searchUsers(@ModelAttribute("userSearchDTO") UserSearchDTO userSearchDTO, Model model) {
 		List<User> usersBySearch = userService.searchUsers(userSearchDTO);

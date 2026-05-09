@@ -1,17 +1,20 @@
 package com.gameHub.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.gameHub.domain.Post;
 import com.gameHub.domain.PostSearchDTO;
 
 public interface PostRepository {
-
-	List<Post> searchPosts(PostSearchDTO postSearchDTO);
+	
+	List<Post> getAllPosts();
 	
 	Post getPostByNo(int postNo);
 	
-	/*
+	List<Post> getPostsByUserNo(int userNo);
+	
+	List<Post> getPostsByGameNo(int gameNo);
 	
 	List<Post> getPostsByType(String postType);
 	
@@ -19,15 +22,13 @@ public interface PostRepository {
 	
 	List<Post> getPostsByContent(String postContent);
 	
-	List<Post> getPostsByViewCount(String viewCount);
+	List<Post> getPostsByViewCount(int viewCount, int limit);
 	
-	List<Post> getPostsByLikeCount(String likeCount);
+	List<Post> getPostsByLikeCount(int likeCount, int limit);
 	
-	List<Post> getPostsByCommentCount(String commentCount);
+	List<Post> getPostsByCommentCount(int commentCount, int limit);
 	
 	List<Post> getPostsByCreatedAt(LocalDateTime startTime, LocalDateTime endTime);
-	
-	*/
 	
 	void setNewPost(Post newPost);
 	

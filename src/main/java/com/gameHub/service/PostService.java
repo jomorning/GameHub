@@ -11,24 +11,6 @@ public interface PostService {
 	
 	Post getPostByNo(int postNo);
 	
-	/*
-	
-	List<Post> getPostsByType(String postType);
-	
-	List<Post> getPostsByTitle(String postTitle);
-	
-	List<Post> getPostsByContent(String postContent);
-	
-	List<Post> getPostsByViewCount(String viewCount);
-	
-	List<Post> getPostsByLikeCount(String likeCount);
-	
-	List<Post> getPostsByCommentCount(String commentCount);
-	
-	List<Post> getPostsByCreatedAt(LocalDateTime startTime, LocalDateTime endTime);
-	
-	*/
-	
 	void setNewPost(Post newPost);
 	
 	void setEditPost(Post editPost);

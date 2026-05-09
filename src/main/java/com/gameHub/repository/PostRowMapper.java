@@ -13,7 +13,7 @@ public class PostRowMapper implements RowMapper<Post> {
 	public Post mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Post post = new Post();
 		post.setPostNo(rs.getInt("post_no"));
-		post.setUserNo(rs.getInt("userNo"));
+		post.setUserNo(rs.getInt("user_no"));
 		post.setGameNo(rs.getInt("game_no"));
 		post.setPostType(rs.getString("post_type"));
 		post.setPostTitle(rs.getString("post_title"));

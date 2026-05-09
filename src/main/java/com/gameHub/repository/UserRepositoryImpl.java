@@ -3,6 +3,7 @@ package com.gameHub.repository;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Repository;
 
 import com.gameHub.domain.User;
 import com.gameHub.domain.UserSearchDTO;
-import com.gameHub.exception.NoUserFoundException;
 
 @Repository
 public class UserRepositoryImpl implements UserRepository {
@@ -29,6 +29,11 @@ public class UserRepositoryImpl implements UserRepository {
 	public List<User> getAllUsers() {
 		String SQL = "SELECT * FROM app_user";
 		List<User> allUsers = template.query(SQL, new UserRowMapper());
+		
+		if (allUsers.isEmpty()) {
+			return Collections.emptyList();
+		}
+		
 		return allUsers;
 	}
 
@@ -43,6 +48,19 @@ public class UserRepositoryImpl implements UserRepository {
 		
 		User userByNo = userByNoTemp.get(0);
 		return userByNo;
+	}
+
+	@Override
+	public User getUserByName(String userName) {
+		String SQL = "SELECT * FROM app_user WHERE user_name = ?";
+		List<User> userByNameTemp = template.query(SQL, new UserRowMapper(), userName);
+		
+		if (userByNameTemp.isEmpty()) {
+			return null;
+		}
+		
+		User userByName = userByNameTemp.get(0);
+		return userByName;
 	}
 
 	@Override
@@ -124,7 +142,5 @@ public class UserRepositoryImpl implements UserRepository {
 		template.update(SQL, userNo);
 		
 	}
-	
-	
 
 }

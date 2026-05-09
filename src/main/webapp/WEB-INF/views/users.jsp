@@ -7,14 +7,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>전체 사용자 목록</title>
+<title>사용자 목록</title>
 </head>
 <body>
 	<a href="<c:url value='/'/>">메인으로 돌아가기</a>
 	
-	<c:url value="/user/search" var="searchUserURL"/>
+	<c:url value="/user/search" var="usersURL"/>
 	
-	<form:form modelAttribute="userSearchDTO" method="GET" action="${searchUserURL}">
+	<form:form modelAttribute="userSearchDTO" method="GET" action="${usersURL}">
 		<h3>사용자 정보 검색</h3>
 			<label for="detail">상세정보 검색</label>
 			<form:radiobutton path="searchMode" id="detail" value="detail"/><br>
@@ -35,7 +35,7 @@
 			사용자생성종료T: <form:input type="datetime-local" path="endCreatedTime"/>
 			<br>
 		<button>조회</button>
-		<a href="${searchUserURL}">초기화</a>
+		<a href="${usersURL}">초기화</a>
 	</form:form>
 
 	<c:forEach var="users" items="${users}">

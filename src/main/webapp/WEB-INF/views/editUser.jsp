@@ -11,7 +11,7 @@
 </head>
 <body>
 	<c:url value="/user/search" var="usersURL"/>
-	<a href="${usersURL}">전체 사용자 목록</a>
+	<a href="${usersURL}">사용자 목록</a>
 	<c:url value="/user/${editUser.userNo}" var="editUserURL"/>
 	<form:form modelAttribute="editUser" action="${editUserURL}" method="PUT">
 		<p>변경할 아이디: <form:input path="userId"/>

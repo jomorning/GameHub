@@ -13,6 +13,8 @@ public interface GameRepository {
 	
 	Game getGameByNo(int gameNo);
 	
+	Game getGameByName(String gameName);
+	
 	List<Game> getGamesByGenre(String genre);
 	
 	List<Game> getGamesByDeveloper(String gameDeveloper);

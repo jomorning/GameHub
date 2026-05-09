@@ -10,7 +10,7 @@
 </head>
 <body>
 	<c:url value="/user/search" var="usersURL"/>
-	<a href="${usersURL}">[ADMIN] 전체 사용자 목록</a>
+	<a href="${usersURL}">[ADMIN] 사용자 목록</a>
 	<br>
 	<c:url value="/user/new" var="newUserURL"/>
 	<a href="${newUserURL}">회원 가입</a>

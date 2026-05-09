@@ -1,6 +1,7 @@
 package com.gameHub.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,7 +26,7 @@ public class PostController {
 	PostService postService;
 	
 	@GetMapping("/post/search")
-	public String searchPosts(@ModelAttribute("postSearchDTO") PostSearchDTO postSearchDTO, Model model) {
+	public String searchPosts(@ModelAttribute("postSearchDTO") PostSearchDTO postSearchDTO, Model model) {		
 		List<Post> postsBySearch = postService.searchPosts(postSearchDTO);
 		model.addAttribute("posts", postsBySearch);
 		return "posts";
@@ -63,7 +64,7 @@ public class PostController {
 	}
 	
 	@PutMapping("/post/{postNo}")
-	public String submitEditPostForm(@ModelAttribute("editPost") Post editPost) {
+	public String submitEditPostForm(@ModelAttribute("editPost") Post editPost) {		
 		postService.setEditPost(editPost);	
 		// 로직 추가 필요함. 수정 전 폼 유지 등...
 		return "redirect:/post/" + editPost.getPostNo();

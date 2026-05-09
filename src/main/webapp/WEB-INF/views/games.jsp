@@ -34,7 +34,7 @@
 		<c:url value="/game/${games.gameNo}" var="gameURL"/>
 		<a href="${gameURL}">상세 정보</a>
 		
-		<c:url value="/post/${games.gameNo}" var="guidesURL"/>
+		<c:url value="/post/search?keyword=${games.gameName}" var="guidesURL"/>
 		<a href="${guidesURL}">게임 공략 정보</a>
 		<hr>
 	</c:forEach>

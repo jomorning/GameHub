@@ -11,6 +11,8 @@ public interface UserRepository {
 
 	User getUserByNo(int userNo);
 	
+	User getUserByName(String userName);
+	
 	List<User> searchUsersByDetail(UserSearchDTO userSearchDTO);
 	
 	List<User> searchUsersByCondition(UserSearchDTO userSearchDTO);
