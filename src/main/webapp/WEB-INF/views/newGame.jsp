@@ -18,7 +18,7 @@
 		<p>게임명: <form:input path="gameName"/><br>
 		<p>장르: <form:input path="genre"/><br>
 		<p>연령 제한: <form:input type="number" path="gameAgeRating"/><br>
-		<p>개발사: <form:textarea path="gameDescription" placeholder="내용을 입력하세요."/><br>
+		<p>게임 설명: <form:textarea path="gameDescription" placeholder="내용을 입력하세요."/><br>
 		<p>개발사: <form:input path="gameDeveloper"/><br>
 		<p>배급사: <form:input path="gamePublisher"/><br>
 		<p>출시일: <form:input type="date" path="gameReleaseDate"/>

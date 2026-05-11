@@ -17,7 +17,7 @@
 	<p>게임명: ${gameByNo.gameName}
 	<p>장르: ${gameByNo.genre}
 	<p>연령 제한: ${gameByNo.gameAgeRating}
-	<p>개발사: ${gameByNo.gameDescription}
+	<p>게임 설명: ${gameByNo.gameDescription}
 	<p>개발사: ${gameByNo.gameDeveloper}
 	<p>배급사: ${gameByNo.gamePublisher}
 	<p>출시일: ${gameByNo.gameReleaseDate}
