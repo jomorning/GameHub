@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
 import com.gameHub.domain.Comment;
-import com.gameHub.domain.CommentResponseDTO;
+import com.gameHub.exception.NoCommentFoundException;
 import com.gameHub.service.CommentService;
 
 @Controller
@@ -19,6 +20,13 @@ public class CommentController {
 	
 	@Autowired
 	CommentService commentService;
+	
+	@GetMapping("/post/{postNo}/comment/{commentNo}")
+	public String getCommentByNo(@PathVariable("commentNo") int commentNo, Model model) {
+		Comment commentByNo = commentService.getCommentByNo(commentNo);
+		model.addAttribute("commentByNo", commentByNo);
+		return "comment";
+	}
 	
 	@GetMapping("/post/{postNo}/comment/new")
 	public String getNewCommentForm(@ModelAttribute("newComment") Comment newComment) {
@@ -36,6 +44,12 @@ public class CommentController {
 		Comment commentByNo = commentService.getCommentByNo(commentNo);
 		model.addAttribute("editComment", commentByNo);
 		return "editComment";
+	}
+	
+	@ExceptionHandler(value={(NoCommentFoundException.class)})
+	public String noCommentFoundHandler(NoCommentFoundException exception, Model model) {
+		model.addAttribute("invalidCommentNo", exception.getInvalidCommentNo());
+		return "noCommentFoundException";
 	}
 	
 	@PutMapping("/post/{postNo}/comment/{commentNo}")
