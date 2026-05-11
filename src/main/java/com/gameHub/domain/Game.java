@@ -7,7 +7,7 @@ public class Game {
 	private int gameNo;
 	private String gameName;
 	private String genre;
-	private Integer gameAgeRating;
+	private int gameAgeRating;
 	private String gameDescription;
 	private String gameDeveloper;
 	private String gamePublisher;
@@ -40,11 +40,11 @@ public class Game {
 		this.genre = genre;
 	}
 
-	public Integer getGameAgeRating() {
+	public int getGameAgeRating() {
 		return gameAgeRating;
 	}
 
-	public void setGameAgeRating(Integer gameAgeRating) {
+	public void setGameAgeRating(int gameAgeRating) {
 		this.gameAgeRating = gameAgeRating;
 	}
 

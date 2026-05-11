@@ -32,5 +32,38 @@
 		<button>게시글 삭제</button>
 	</form:form>
 	
+	<hr>
+	<hr>
+	
+	<c:forEach var="comments" items="${commentsByPost}">
+		<h5>
+		${comments.userId}<br>
+		${comments.commentContent}<br>
+		생성: ${comments.commentCreatedAt}<br>
+		수정: ${comments.commentUpdatedAt}
+		
+		<br>
+		[DEVELOPER] commentNo: ${comments.commentNo}
+		</h5>
+		
+		<c:url value="/post/${postByNo.postNo}/comment/${comments.commentNo}/edit" var="editCommentURL"/>
+		<a href="${editCommentURL}">댓글 수정</a>
+		
+		<c:url value="/post/${postByNo.postNo}/comment/${comments.commentNo}" var="deleteCommentURL"/>
+		<form:form action="${deleteCommentURL}" method="DELETE">
+			<button>댓글 삭제</button>
+		</form:form>
+		
+	</c:forEach>
+	
+	<c:url value="/post/${postByNo.postNo}/comment" var="newCommentURL"/>
+	<form:form modelAttribute="newComment" action="${newCommentURL}">
+		<h4>댓글 등록하기</h4>
+		<form:textarea path="commentContent"/>
+		<button>댓글 등록</button>
+		
+		
+	</form:form>
+	
 </body>
 </html>

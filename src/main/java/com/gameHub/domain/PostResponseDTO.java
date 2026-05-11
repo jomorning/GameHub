@@ -10,9 +10,9 @@ public class PostResponseDTO {
 	private String postType;
 	private String postTitle;
 	private String postContent;
-	private Integer viewCount;
-	private Integer likeCount;
-	private Integer commentCount;
+	private int viewCount;
+	private int likeCount;
+	private int commentCount;
 	private LocalDateTime postCreatedAt;
 	private LocalDateTime postUpdatedAt;
 	
@@ -67,27 +67,27 @@ public class PostResponseDTO {
 		this.postContent = postContent;
 	}
 
-	public Integer getViewCount() {
+	public int getViewCount() {
 		return viewCount;
 	}
 
-	public void setViewCount(Integer viewCount) {
+	public void setViewCount(int viewCount) {
 		this.viewCount = viewCount;
 	}
 
-	public Integer getLikeCount() {
+	public int getLikeCount() {
 		return likeCount;
 	}
 
-	public void setLikeCount(Integer likeCount) {
+	public void setLikeCount(int likeCount) {
 		this.likeCount = likeCount;
 	}
 
-	public Integer getCommentCount() {
+	public int getCommentCount() {
 		return commentCount;
 	}
 
-	public void setCommentCount(Integer commentCount) {
+	public void setCommentCount(int commentCount) {
 		this.commentCount = commentCount;
 	}
 

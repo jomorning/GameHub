@@ -14,9 +14,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.gameHub.domain.Comment;
+import com.gameHub.domain.CommentResponseDTO;
 import com.gameHub.domain.Post;
 import com.gameHub.domain.PostResponseDTO;
 import com.gameHub.exception.NoPostFoundException;
+import com.gameHub.service.CommentService;
 import com.gameHub.service.PostService;
 
 @Controller
@@ -25,6 +28,9 @@ public class PostController {
 	@Autowired
 	PostService postService;
 	
+	@Autowired
+	CommentService commentService;
+	
 	@GetMapping("/post/search")
 	public String searchPosts(@RequestParam(required=false, value="keyword") String keyword, Model model) {		
 		List<PostResponseDTO> postsBySearch = postService.searchPosts(keyword);
@@ -32,10 +38,16 @@ public class PostController {
 		return "posts";
 	}
 	
+	
 	@GetMapping("/post/{postNo}")
-	public String getPostByNo(@PathVariable("postNo") int postNo, Model model) {
+	public String getPostByNo(@PathVariable("postNo") int postNo, Model model, @ModelAttribute("newComment") Comment newComment) {
+		// post.jsp processURL 는 Post 컨트롤러 및 Comment 컨트롤러가 매핑되어 있으므로,
+		// 두 컨트롤러에 post.jsp form 태그에 대한 Model.addAttribute() 바인딩 또는 @ModelAttribute 바인딩을 명시적으로 해야 함.
+		// 바인딩 누락 시, newComment 에 대한 바인딩 객체를 인식하지 못 함.
 		Post postByNo = postService.getPostByNo(postNo);
+		List<CommentResponseDTO> commentsByPost = commentService.getCommentsByPost(postNo);
 		model.addAttribute("postByNo", postByNo);
+		model.addAttribute("commentsByPost", commentsByPost);		
 		return "post";
 	}
 	

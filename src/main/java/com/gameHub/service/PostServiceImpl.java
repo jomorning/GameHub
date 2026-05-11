@@ -57,8 +57,8 @@ public class PostServiceImpl implements PostService {
 		// 임시 게시글 등록자 UserNo. 3 (jomorning)
 		newPost.setUserNo(3);
 		postRepository.setNewPost(newPost);
-	}
-
+	}	
+	
 	@Override
 	public void setEditPost(Post editPost) {
 		postRepository.setEditPost(editPost);

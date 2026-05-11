@@ -5,9 +5,9 @@ import java.time.LocalDateTime;
 public class Post {
 	
 	private int postNo;
-	private Integer userNo;
+	private int userNo;
 	private String userName;
-	private Integer gameNo;
+	private int gameNo;
 	private String gameName;
 	private String postType;
 	private String postTitle;
@@ -29,11 +29,11 @@ public class Post {
 		this.postNo = postNo;
 	}
 
-	public Integer getUserNo() {
+	public int getUserNo() {
 		return userNo;
 	}
 
-	public void setUserNo(Integer userNo) {
+	public void setUserNo(int userNo) {
 		this.userNo = userNo;
 	}
 
@@ -45,11 +45,11 @@ public class Post {
 		this.userName = userName;
 	}
 
-	public Integer getGameNo() {
+	public int getGameNo() {
 		return gameNo;
 	}
 
-	public void setGameNo(Integer gameNo) {
+	public void setGameNo(int gameNo) {
 		this.gameNo = gameNo;
 	}
 

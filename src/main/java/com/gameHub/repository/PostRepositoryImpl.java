@@ -143,6 +143,10 @@ public class PostRepositoryImpl implements PostRepository {
 
 	@Override
 	public void setDeletePost(int postNo) {
+		// PostNo 를 FK 참조하는 comment 열부터 삭제
+		// 추후 ON DELETE CASCADE 적용 고려할 것
+		String deleteCommentByPostNo = "DELETE FROM comment WHERE post_no = ?";
+		template.update(deleteCommentByPostNo, postNo);
 		String SQL = "DELETE FROM post WHERE post_no = ?";
 		template.update(SQL, postNo);
 	}
