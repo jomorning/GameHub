@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.gameHub.domain.Post;
-import com.gameHub.domain.PostSearchDTO;
+import com.gameHub.domain.PostResponseDTO;
 
 public interface PostRepository {
 	
@@ -29,6 +29,8 @@ public interface PostRepository {
 	List<Post> getPostsByCommentCount(int commentCount, int limit);
 	
 	List<Post> getPostsByCreatedAt(LocalDateTime startTime, LocalDateTime endTime);
+	
+	List<PostResponseDTO> getJoinedPosts(String keyword);
 	
 	void setNewPost(Post newPost);
 	

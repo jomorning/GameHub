@@ -14,17 +14,18 @@
 	
 	<c:url value="/post/search" var="postsURL"/>
 	
-	<form:form modelAttribute="postSearchDTO" method="GET" action="${postsURL}">
+	<form action="${postsURL}">
 		<h3>게시글 검색</h3>
-			키워드 검색: <form:input path="keyword"/>
+			키워드 검색: <input type="text" name="keyword"/>
 		<button>검색</button>
-	</form:form>
+	</form>
 	<hr>
 	<c:forEach var="posts" items="${posts}">
-		<p>게시글 제목: ${posts.postTitle}
+		<p>제목: ${posts.postTitle}
 		<p>게임: ${posts.gameName}
-		<p>게시글 종류: ${posts.postType}
-		<p>작성자: ${posts.userNo} // 구현예정
+		
+		<p>${posts.postType}
+		<p>작성자: ${posts.userId}
 		<p>댓글 ${posts.commentCount} 개 | 좋아요 ${posts.likeCount} 개 | 조회수 ${posts.viewCount} 개   
 		
 		<c:url value="/post/${posts.postNo}" var="postURL"/>

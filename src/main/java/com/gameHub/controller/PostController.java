@@ -1,7 +1,6 @@
 package com.gameHub.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,9 +12,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.gameHub.domain.Post;
-import com.gameHub.domain.PostSearchDTO;
+import com.gameHub.domain.PostResponseDTO;
 import com.gameHub.exception.NoPostFoundException;
 import com.gameHub.service.PostService;
 
@@ -26,8 +26,8 @@ public class PostController {
 	PostService postService;
 	
 	@GetMapping("/post/search")
-	public String searchPosts(@ModelAttribute("postSearchDTO") PostSearchDTO postSearchDTO, Model model) {		
-		List<Post> postsBySearch = postService.searchPosts(postSearchDTO);
+	public String searchPosts(@RequestParam(required=false, value="keyword") String keyword, Model model) {		
+		List<PostResponseDTO> postsBySearch = postService.searchPosts(keyword);
 		model.addAttribute("posts", postsBySearch);
 		return "posts";
 	}

@@ -51,16 +51,16 @@ public class UserRepositoryImpl implements UserRepository {
 	}
 
 	@Override
-	public User getUserByName(String userName) {
-		String SQL = "SELECT * FROM app_user WHERE user_name = ?";
-		List<User> userByNameTemp = template.query(SQL, new UserRowMapper(), userName);
+	public User getUserById(String userId) {
+		String SQL = "SELECT * FROM app_user WHERE user_id = ?";
+		List<User> userByIdTemp = template.query(SQL, new UserRowMapper(), userId);
 		
-		if (userByNameTemp.isEmpty()) {
+		if (userByIdTemp.isEmpty()) {
 			return null;
 		}
 		
-		User userByName = userByNameTemp.get(0);
-		return userByName;
+		User userById = userByIdTemp.get(0);
+		return userById;
 	}
 
 	@Override

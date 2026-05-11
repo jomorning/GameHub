@@ -1,7 +1,7 @@
 package com.gameHub.repository;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.gameHub.domain.Post;
+import com.gameHub.domain.PostResponseDTO;
 
 @Repository
 public class PostRepositoryImpl implements PostRepository {
@@ -102,6 +103,30 @@ public class PostRepositoryImpl implements PostRepository {
 	public List<Post> getPostsByCreatedAt(LocalDateTime startTime, LocalDateTime endTime) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<PostResponseDTO> getJoinedPosts(String keyword) {
+		StringBuilder SQL = new StringBuilder("SELECT post.post_no, app_user.user_id, game.game_name, post.post_type, post.post_title, post.post_content, post.view_count, post.like_count, post.comment_count, post.post_created_at, post.post_updated_at FROM post JOIN game ON post.game_no = game.game_no JOIN app_user ON post.user_no = app_user.user_no WHERE 1=0");
+		List<Object> params = new ArrayList<>();
+		
+		SQL.append(" OR app_user.user_id = ?" );
+		params.add(keyword);
+		
+		SQL.append(" OR game.game_name = ?" );
+		params.add(keyword);
+		
+		SQL.append(" OR post.post_type = ?" );
+		params.add(keyword);
+		
+		SQL.append(" OR post.post_title LIKE ?" );
+		params.add("%" + keyword + "%");
+		
+		SQL.append(" OR post.post_content LIKE ?" );
+		params.add("%" + keyword + "%");
+		
+		List<PostResponseDTO> joinedPosts = template.query(SQL.toString(), new JoinedPostsRowMapper(), params.toArray());
+		return joinedPosts;
 	}
 
 	@Override

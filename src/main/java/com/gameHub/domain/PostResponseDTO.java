@@ -2,23 +2,21 @@ package com.gameHub.domain;
 
 import java.time.LocalDateTime;
 
-public class Post {
+public class PostResponseDTO {
 	
 	private int postNo;
-	private Integer userNo;
-	private String userName;
-	private Integer gameNo;
+	private String userId;
 	private String gameName;
 	private String postType;
 	private String postTitle;
 	private String postContent;
-	private int viewCount;
-	private int likeCount;
-	private int commentCount;
+	private Integer viewCount;
+	private Integer likeCount;
+	private Integer commentCount;
 	private LocalDateTime postCreatedAt;
 	private LocalDateTime postUpdatedAt;
 	
-	public Post() {
+	public PostResponseDTO() {
 	}
 
 	public int getPostNo() {
@@ -29,28 +27,12 @@ public class Post {
 		this.postNo = postNo;
 	}
 
-	public Integer getUserNo() {
-		return userNo;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setUserNo(Integer userNo) {
-		this.userNo = userNo;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public Integer getGameNo() {
-		return gameNo;
-	}
-
-	public void setGameNo(Integer gameNo) {
-		this.gameNo = gameNo;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	public String getGameName() {
@@ -85,27 +67,27 @@ public class Post {
 		this.postContent = postContent;
 	}
 
-	public int getViewCount() {
+	public Integer getViewCount() {
 		return viewCount;
 	}
 
-	public void setViewCount(int viewCount) {
+	public void setViewCount(Integer viewCount) {
 		this.viewCount = viewCount;
 	}
 
-	public int getLikeCount() {
+	public Integer getLikeCount() {
 		return likeCount;
 	}
 
-	public void setLikeCount(int likeCount) {
+	public void setLikeCount(Integer likeCount) {
 		this.likeCount = likeCount;
 	}
 
-	public int getCommentCount() {
+	public Integer getCommentCount() {
 		return commentCount;
 	}
 
-	public void setCommentCount(int commentCount) {
+	public void setCommentCount(Integer commentCount) {
 		this.commentCount = commentCount;
 	}
 

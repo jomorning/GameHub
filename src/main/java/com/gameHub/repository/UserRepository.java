@@ -11,7 +11,7 @@ public interface UserRepository {
 
 	User getUserByNo(int userNo);
 	
-	User getUserByName(String userName);
+	User getUserById(String userId);
 	
 	List<User> searchUsersByDetail(UserSearchDTO userSearchDTO);
 	
