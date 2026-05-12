@@ -18,9 +18,11 @@ import com.gameHub.domain.Comment;
 import com.gameHub.domain.CommentResponseDTO;
 import com.gameHub.domain.Post;
 import com.gameHub.domain.PostResponseDTO;
+import com.gameHub.domain.Recruit;
 import com.gameHub.exception.NoPostFoundException;
 import com.gameHub.service.CommentService;
 import com.gameHub.service.PostService;
+import com.gameHub.service.RecruitService;
 
 @Controller
 public class PostController {
@@ -30,6 +32,9 @@ public class PostController {
 	
 	@Autowired
 	CommentService commentService;
+	
+	@Autowired
+	RecruitService recruitService;
 	
 	@GetMapping("/post/search")
 	public String searchPosts(@RequestParam(required=false, value="keyword") String keyword, Model model) {		
@@ -47,7 +52,13 @@ public class PostController {
 		Post postByNo = postService.getPostByNo(postNo);
 		List<CommentResponseDTO> commentsByPost = commentService.getCommentsByPost(postNo);
 		model.addAttribute("postByNo", postByNo);
-		model.addAttribute("commentsByPost", commentsByPost);		
+		model.addAttribute("commentsByPost", commentsByPost);
+		
+		if (postByNo.getPostType().equals("RECRUIT")) {
+			Recruit recruitByPost = recruitService.getRecruitByPost(postNo);
+			model.addAttribute("recruitByPost", recruitByPost);
+		}
+		
 		return "post";
 	}
 	
@@ -59,12 +70,23 @@ public class PostController {
 	
 	@GetMapping("/post/new")
 	public String getNewPostForm(@ModelAttribute("newPost") Post newPost) {
+		
+		if (newPost.getPostType().equals("RECRUIT")) {
+			return "newRecruit";
+		}
+		
 		return "newPost";
 	}
 	
 	@PostMapping("/post")
-	public String submitNewPostForm(@ModelAttribute("newPost") Post newPost) {
+	public String submitNewPostForm(@ModelAttribute("newPost") Post newPost, @ModelAttribute("newRecruit") Recruit newRecruit) {
+		
 		postService.setNewPost(newPost);
+		
+		if (newPost.getPostType().equals("RECRUIT")) {
+			recruitService.setNewRecruit(newRecruit);
+		}
+		
 		return "redirect:/post/search";
 	}
 	

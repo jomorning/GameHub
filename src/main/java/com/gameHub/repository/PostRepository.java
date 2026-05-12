@@ -32,7 +32,7 @@ public interface PostRepository {
 	
 	List<PostResponseDTO> getJoinedPosts(String keyword);
 	
-	void setNewPost(Post newPost);
+	int setNewPost(Post newPost);
 	
 	void setEditPost(Post editPost);
 	
