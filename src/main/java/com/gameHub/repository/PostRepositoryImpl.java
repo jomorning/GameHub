@@ -1,9 +1,5 @@
 package com.gameHub.repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +9,8 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.gameHub.domain.Post;
@@ -136,27 +134,12 @@ public class PostRepositoryImpl implements PostRepository {
 
 	@Override
 	public int setNewPost(Post newPost) {
-		
-		String SQL = "INSERT INTO post(user_no, game_no, post_type, post_title, post_content) VALUES(?,?,?,?,?)";
-		// template.update(SQL, newPost.getUserNo(), newPost.getGameNo(), newPost.getPostType(), newPost.getPostTitle(), newPost.getPostContent());
-
-		template.update(new PreparedStatementCreator() {
-
-			@Override
-			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-
-				PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
-
-				ps.setInt(1, newPost.getUserNo());
-				ps.setInt(2, newPost.getGameNo());
-				ps.setString(3, newPost.getPostType());
-				ps.setString(4, newPost.getPostTitle());
-				ps.setString(5, newPost.getPostContent());
-				return ps;
-			}
-		}, keyHolder);
-
-		return keyHolder.getKey().intValue();
+		String SQL = "INSERT INTO post(user_no, game_no, post_type, post_title, post_content) VALUES(?,?,?,?,?)";	
+		PreparedStatementCreator postPreparedStatementCreator = new PostPreparedStatementCreator(SQL, newPost);
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+		template.update(postPreparedStatementCreator, keyHolder);
+		int postNoforRecruit = keyHolder.getKey().intValue();
+		return postNoforRecruit;
 	}
 
 	@Override
