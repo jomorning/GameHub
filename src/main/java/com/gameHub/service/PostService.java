@@ -3,6 +3,7 @@ package com.gameHub.service;
 import java.util.List;
 
 import com.gameHub.domain.Post;
+import com.gameHub.domain.PostForm;
 import com.gameHub.domain.PostResponseDTO;
 
 public interface PostService {
@@ -11,9 +12,9 @@ public interface PostService {
 	
 	Post getPostByNo(int postNo);
 	
-	void setNewPost(Post newPost);
+	void setNewPost(PostForm postForm);
 	
-	void setEditPost(Post editPost);
+	void setEditPost(PostForm postForm);
 
 	void setDeletePost(int postNo);
 

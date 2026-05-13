@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.gameHub.domain.Post;
+import com.gameHub.domain.PostForm;
 import com.gameHub.domain.PostResponseDTO;
 
 public interface PostRepository {
@@ -32,9 +33,9 @@ public interface PostRepository {
 	
 	List<PostResponseDTO> getJoinedPosts(String keyword);
 	
-	int setNewPost(Post newPost);
+	int setNewPost(PostForm postForm);
 	
-	void setEditPost(Post editPost);
+	void setEditPost(PostForm postForm);
 	
 	void setDeletePost(int postNo);
 	

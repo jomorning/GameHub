@@ -7,13 +7,15 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>공략 게시글 상세 정보</title>
+<title>${postByNo.postTitle}</title>
 </head>
 <body>
 	<c:url value="/post/search" var="postsURL"/>
-	<a href="${postsURL}">공략 게시글 목록</a>
+	<a href="${postsURL}">게시글 목록</a>
 	<br>
-	<h3>${postByNo.postTitle}</h3>
+	<h3>${postByNo.postType}</h3>
+	모집 상태: ${recruitByPost.recruitStatus}
+	<h2>${postByNo.postTitle}</h2>
 	<h4>#${postByNo.gameName}</h4>
 	<hr>
 	게시글 등록: ${postByNo.postCreatedAt}

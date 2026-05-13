@@ -6,8 +6,4 @@ public interface RecruitService {
 
 	Recruit getRecruitByPost(int postNo);
 
-	void setNewRecruit(Recruit newRecruit);
-
-	void setEditRecruit(Recruit editRecruit);
-
 }

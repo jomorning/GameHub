@@ -12,6 +12,9 @@
 <body>
 	<a href="<c:url value='/'/>">메인으로 돌아가기</a>
 	
+	<c:url value="/post/new" var="newPostURL"/>
+	<a href="${newPostURL}">게시글 등록</a>
+	
 	<c:url value="/post/search" var="postsURL"/>
 	
 	<form action="${postsURL}">
@@ -23,8 +26,7 @@
 	<c:forEach var="posts" items="${posts}">
 		<p>제목: ${posts.postTitle}
 		<p>게임: ${posts.gameName}
-		
-		<p>${posts.postType}
+		<p>${posts.postType} 
 		<p>작성자: ${posts.userId}
 		<p>댓글 ${posts.commentCount} 개 | 좋아요 ${posts.likeCount} 개 | 조회수 ${posts.viewCount} 개   
 		

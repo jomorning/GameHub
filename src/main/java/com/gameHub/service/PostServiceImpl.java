@@ -8,11 +8,12 @@ import org.springframework.stereotype.Service;
 
 import com.gameHub.domain.Game;
 import com.gameHub.domain.Post;
+import com.gameHub.domain.PostForm;
 import com.gameHub.domain.PostResponseDTO;
-import com.gameHub.domain.User;
 import com.gameHub.exception.NoPostFoundException;
 import com.gameHub.repository.GameRepository;
 import com.gameHub.repository.PostRepository;
+import com.gameHub.repository.RecruitRepository;
 import com.gameHub.repository.UserRepository;
 
 @Service
@@ -26,6 +27,9 @@ public class PostServiceImpl implements PostService {
 
 	@Autowired
 	UserRepository userRepository;
+	
+	@Autowired
+	RecruitRepository recruitRepository;
 
 	@Override
 	public List<PostResponseDTO> searchPosts(String keyword) {
@@ -50,18 +54,29 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public void setNewPost(Post newPost) {
-		String newPostGameName = newPost.getGameName();
+	public void setNewPost(PostForm postForm) {
+		String newPostGameName = postForm.getGameName();
 		Game newPostGame = gameRepository.getGameByName(newPostGameName);
-		newPost.setGameNo(newPostGame.getGameNo());
+		
 		// 임시 게시글 등록자 UserNo. 3 (jomorning)
-		newPost.setUserNo(3);
-		postRepository.setNewPost(newPost);
+		postForm.setUserNo(3);
+		postForm.setGameNo(newPostGame.getGameNo());
+		
+		int returnedPostNo = postRepository.setNewPost(postForm);
+		postForm.setPostNo(returnedPostNo);
+		
+		if (postForm.getPostType().equals("RECRUIT")) {
+			recruitRepository.setNewRecruit(postForm);
+		}
 	}	
 	
 	@Override
-	public void setEditPost(Post editPost) {
-		postRepository.setEditPost(editPost);
+	public void setEditPost(PostForm postForm) {
+		postRepository.setEditPost(postForm);
+		
+		if (postForm.getPostType().equals("RECRUIT")) {
+			recruitRepository.setEditRecruit(postForm);
+		}
 	}
 
 	@Override

@@ -14,6 +14,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.gameHub.domain.Post;
+import com.gameHub.domain.PostForm;
 import com.gameHub.domain.PostResponseDTO;
 
 @Repository
@@ -116,8 +117,8 @@ public class PostRepositoryImpl implements PostRepository {
 		SQL.append(" OR app_user.user_id = ?");
 		params.add(keyword);
 
-		SQL.append(" OR game.game_name = ?");
-		params.add(keyword);
+		SQL.append(" OR game.game_name LIKE ?");
+		params.add("%" + keyword + "%");
 
 		SQL.append(" OR post.post_type = ?");
 		params.add(keyword);
@@ -133,29 +134,31 @@ public class PostRepositoryImpl implements PostRepository {
 	}
 
 	@Override
-	public int setNewPost(Post newPost) {
-		String SQL = "INSERT INTO post(user_no, game_no, post_type, post_title, post_content) VALUES(?,?,?,?,?)";	
-		PreparedStatementCreator postPreparedStatementCreator = new PostPreparedStatementCreator(SQL, newPost);
-		KeyHolder keyHolder = new GeneratedKeyHolder();
-		template.update(postPreparedStatementCreator, keyHolder);
-		int postNoforRecruit = keyHolder.getKey().intValue();
-		return postNoforRecruit;
+	public int setNewPost(PostForm postForm) {
+		String SQL = "INSERT INTO post(user_no, game_no, post_type, post_title, post_content) VALUES(?,?,?,?,?)";		
+		template.update(SQL, postForm.getUserNo(), postForm.getGameNo(), postForm.getPostType(), postForm.getPostTitle(), postForm.getPostContent());
+		String SQLforReturnPK = "SELECT LAST_INSERT_ID()";
+		Integer returnedPostNo = template.queryForObject(SQLforReturnPK, Integer.class);		
+		return returnedPostNo;
 	}
 
 	@Override
-	public void setEditPost(Post editPost) {
+	public void setEditPost(PostForm postForm) {
 		String SQL = "UPDATE post SET post_title = ?, post_content = ? WHERE post_no = ?";
-		template.update(SQL, editPost.getPostTitle(), editPost.getPostContent(), editPost.getPostNo());
+		template.update(SQL, postForm.getPostTitle(), postForm.getPostContent(), postForm.getPostNo());
 	}
 
 	@Override
 	public void setDeletePost(int postNo) {
-		// PostNo 를 FK 참조하는 comment 열부터 삭제
+		// PostNo 를 FK 참조하는 comment, recruit 열부터 삭제
 		// 추후 ON DELETE CASCADE 적용 고려할 것
 		String deleteCommentByPostNo = "DELETE FROM comment WHERE post_no = ?";
 		template.update(deleteCommentByPostNo, postNo);
+		String deleteRecruitByPostNo = "DELETE FROM recruit WHERE post_no = ?";
+		template.update(deleteRecruitByPostNo, postNo);
 		String SQL = "DELETE FROM post WHERE post_no = ?";
 		template.update(SQL, postNo);
+		
 	}
 
 }

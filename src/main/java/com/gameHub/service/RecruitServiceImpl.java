@@ -18,16 +18,4 @@ public class RecruitServiceImpl implements RecruitService {
 		return recruitByPost;
 	}
 
-	@Override
-	public void setNewRecruit(Recruit newRecruit) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setEditRecruit(Recruit editRecruit) {
-		// TODO Auto-generated method stub
-
-	}
-
 }

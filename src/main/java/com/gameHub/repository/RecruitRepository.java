@@ -1,13 +1,14 @@
 package com.gameHub.repository;
 
+import com.gameHub.domain.PostForm;
 import com.gameHub.domain.Recruit;
 
 public interface RecruitRepository {
 	
 	Recruit getRecruitByPost(int postNo);
 	
-	void setNewRecruit(Recruit newRecruit);
+	void setNewRecruit(PostForm postForm);
 	
-	void setEditRecruit(Recruit editRecruit);
+	void setEditRecruit(PostForm postForm);
 
 }

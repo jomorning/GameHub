@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.gameHub.domain.Comment;
 import com.gameHub.domain.CommentResponseDTO;
 import com.gameHub.domain.Post;
+import com.gameHub.domain.PostForm;
 import com.gameHub.domain.PostResponseDTO;
 import com.gameHub.domain.Recruit;
 import com.gameHub.exception.NoPostFoundException;
@@ -31,10 +32,10 @@ public class PostController {
 	PostService postService;
 	
 	@Autowired
-	CommentService commentService;
+	RecruitService recruitService;
 	
 	@Autowired
-	RecruitService recruitService;
+	CommentService commentService;
 	
 	@GetMapping("/post/search")
 	public String searchPosts(@RequestParam(required=false, value="keyword") String keyword, Model model) {		
@@ -69,39 +70,34 @@ public class PostController {
 	}
 	
 	@GetMapping("/post/new")
-	public String getNewPostForm(@ModelAttribute("newPost") Post newPost) {
-		
-		if (newPost.getPostType().equals("RECRUIT")) {
-			return "newRecruit";
-		}
-		
+	public String getNewPostForm(@ModelAttribute("postForm") PostForm postForm) {
 		return "newPost";
 	}
 	
 	@PostMapping("/post")
-	public String submitNewPostForm(@ModelAttribute("newPost") Post newPost, @ModelAttribute("newRecruit") Recruit newRecruit) {
-		
-		postService.setNewPost(newPost);
-		
-		if (newPost.getPostType().equals("RECRUIT")) {
-			recruitService.setNewRecruit(newRecruit);
-		}
-		
-		return "redirect:/post/search";
+	public String submitNewPostForm(@ModelAttribute("postForm") PostForm postForm) {
+		postService.setNewPost(postForm);
+		return "redirect:/post/" + postForm.getPostNo();
 	}
 	
 	@GetMapping("/post/{postNo}/edit")
-	public String getEditPostForm(@PathVariable("postNo") int postNo, Model model) {
+	public String getEditPostForm(@PathVariable("postNo") int postNo, @ModelAttribute("editPostForm") PostForm editPostForm, Model model) {
 		Post postByNo = postService.getPostByNo(postNo);
-		model.addAttribute("editPost", postByNo);
+		Recruit recruitByNo = recruitService.getRecruitByPost(postNo);
+		editPostForm.setPostType(postByNo.getPostType());
+		editPostForm.setPostTitle(postByNo.getPostTitle());
+		editPostForm.setPostContent(postByNo.getPostContent());
+		editPostForm.setRecruitPosition(recruitByNo.getRecruitPosition());
+		editPostForm.setRecruitStatus(recruitByNo.getRecruitStatus());
+		editPostForm.setRecruitMaxMember(recruitByNo.getRecruitMaxMember());
+		model.addAttribute("editPostForm", editPostForm);
 		return "editPost";
 	}
 	
 	@PutMapping("/post/{postNo}")
-	public String submitEditPostForm(@ModelAttribute("editPost") Post editPost) {		
-		postService.setEditPost(editPost);	
-		// 로직 추가 필요함. 수정 전 폼 유지 등...
-		return "redirect:/post/" + editPost.getPostNo();
+	public String submitEditPostForm(@ModelAttribute("editPostForm") PostForm editPostForm) {
+		postService.setEditPost(editPostForm);	
+		return "redirect:/post/" + editPostForm.getPostNo();
 	}
 	
 	@DeleteMapping("/post/{postNo}")

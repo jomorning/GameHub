@@ -13,7 +13,7 @@
 	<a href="<c:url value='/'/>">메인으로 돌아가기</a>
 	
 	<c:url value="/post" var="newPostURL"/>
-	<form:form modelAttribute="newPost" action="${newPostURL}">
+	<form:form modelAttribute="postForm" action="${newPostURL}">
 		<h3>게시글 작성</h3>
 		<p>게시글 선택:
 		<select name="postType">
@@ -24,6 +24,11 @@
 		<p>게임명: <form:input path="gameName"/><br>
 		<p>제목: <form:input path="postTitle"/><br>
 		<p>본문: <form:textarea path="postContent"/><br>
+		
+		<div id="recruitField">
+		<p>모집 포지션: <form:input path="recruitPosition"/><br>
+		<p>모집 인원: <form:input type="number" path="recruitMaxMember"/><br>
+		</div>
 		<br>
 		<button>게시글 등록</button>
 	</form:form>
