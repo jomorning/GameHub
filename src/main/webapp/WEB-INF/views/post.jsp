@@ -26,6 +26,23 @@
 	<hr>
 	${postByNo.postContent}
 	<hr>
+	
+	<c:url value="/post/${postByNo.postNo}/apply" var="newApplyURL"/>
+	<form:form action="${newApplyURL}">
+		<button>참가하기</button>
+	</form:form>
+	
+	<c:url value="/post/${postByNo.postNo}/apply/${applyByNo.userNo}" var="deleteApplyURL"/>
+	<form:form action="${deleteApplyURL}" method="DELETE">
+		<button>참가 취소</button>
+	</form:form>
+	
+	현재 인원: ${recruitByPost.recruitMaxMember}
+	<br>
+	모집 인원: ${recruitByPost.recruitCurrentMember}
+	
+	<hr>
+	
 	<c:url value="/post/${postByNo.postNo}/edit" var="editPostURL"/>
 	<a href="${editPostURL}">게시글 수정</a>
 	

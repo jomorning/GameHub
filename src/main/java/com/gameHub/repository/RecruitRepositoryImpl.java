@@ -21,19 +21,27 @@ public class RecruitRepositoryImpl implements RecruitRepository {
 	void setJdbcTemplate(DataSource dataSource) {
 		this.template = new JdbcTemplate(dataSource);
 	}
+	
+	private void updateCurrentMember(int postNo) {
+		String SQLforCurrentMember = "SELECT COUNT(*) FROM recruit_apply WHERE post_no = ?";
+		int returnedCurrentMember = template.queryForObject(SQLforCurrentMember, Integer.class, postNo);
+		String SQLforUpdateCurrentMember = "UPDATE recruit SET recruit_current_member = ? WHERE post_no = ?";
+		template.update(SQLforUpdateCurrentMember, returnedCurrentMember, postNo);
+	}
 
 	@Override
 	public Recruit getRecruitByPost(int postNo) {
 		String SQL = "SELECT * FROM recruit WHERE post_no = ?";
 		List<Recruit> recruitByPostTemp = template.query(SQL, new RecruitRowMapper(), postNo);
 		Recruit recruitByPost = recruitByPostTemp.get(0);
+		updateCurrentMember(postNo);
 		return recruitByPost;
 	}
 
 	@Override
 	public void setNewRecruit(PostForm postForm) {
-		String SQL = "INSERT INTO recruit(post_no, recruit_position, recruit_max_member) VALUES(?,?,?)";
 		System.out.println("받은 PostNO(PK): " + postForm.getPostNo());
+		String SQL = "INSERT INTO recruit(post_no, recruit_position, recruit_max_member) VALUES(?,?,?)";
 		template.update(SQL, postForm.getPostNo(), postForm.getRecruitPosition(), postForm.getRecruitMaxMember());
 	}
 

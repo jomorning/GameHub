@@ -20,9 +20,11 @@ import com.gameHub.domain.Post;
 import com.gameHub.domain.PostForm;
 import com.gameHub.domain.PostResponseDTO;
 import com.gameHub.domain.Recruit;
+import com.gameHub.domain.RecruitApply;
 import com.gameHub.exception.NoPostFoundException;
 import com.gameHub.service.CommentService;
 import com.gameHub.service.PostService;
+import com.gameHub.service.RecruitApplyService;
 import com.gameHub.service.RecruitService;
 
 @Controller
@@ -37,6 +39,9 @@ public class PostController {
 	@Autowired
 	CommentService commentService;
 	
+	@Autowired
+	RecruitApplyService recruitApplyService;
+	
 	@GetMapping("/post/search")
 	public String searchPosts(@RequestParam(required=false, value="keyword") String keyword, Model model) {		
 		List<PostResponseDTO> postsBySearch = postService.searchPosts(keyword);
@@ -46,8 +51,8 @@ public class PostController {
 	
 	
 	@GetMapping("/post/{postNo}")
-	public String getPostByNo(@PathVariable("postNo") int postNo, Model model, @ModelAttribute("newComment") Comment newComment) {
-		// post.jsp processURL 는 Post 컨트롤러 및 Comment 컨트롤러가 매핑되어 있으므로,
+	public String getPostByNo(@PathVariable("postNo") int postNo, Model model, @ModelAttribute("newComment") Comment newComment, @ModelAttribute("editApply") RecruitApply editApply) {
+		// post.jsp 내부에 Comment, RecruitApply 컨트롤러가 매핑되어 있으므로,
 		// 두 컨트롤러에 post.jsp form 태그에 대한 Model.addAttribute() 바인딩 또는 @ModelAttribute 바인딩을 명시적으로 해야 함.
 		// 바인딩 누락 시, newComment 에 대한 바인딩 객체를 인식하지 못 함.
 		Post postByNo = postService.getPostByNo(postNo);
@@ -57,7 +62,12 @@ public class PostController {
 		
 		if (postByNo.getPostType().equals("RECRUIT")) {
 			Recruit recruitByPost = recruitService.getRecruitByPost(postNo);
+			System.out.println("CM" + recruitByPost.getRecruitCurrentMember());
+			System.out.println("MM" + recruitByPost.getRecruitMaxMember());
 			model.addAttribute("recruitByPost", recruitByPost);
+			// 임시 모집 지원자 UserNo. 4 current_member 를 보여주기 위함.
+			RecruitApply applyByNo = recruitApplyService.getApplyByPostAndUser(postNo, 4);
+			model.addAttribute("applyByNo", applyByNo);
 		}
 		
 		return "post";
