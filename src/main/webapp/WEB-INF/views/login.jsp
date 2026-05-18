@@ -9,7 +9,7 @@
 <title>로그인</title>
 </head>
 <body>
-	<a href="<c:url value='/'/>">메인으로 돌아가기</a>
+	<a href="<c:url value='/main'/>">메인으로 돌아가기</a>
 	
 	<c:url value="/login" var="loginURL"/>
 	<form action="${loginURL}" method="POST">

@@ -1,9 +1,12 @@
 package com.gameHub.service;
 
+import java.io.File;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.gameHub.domain.User;
 import com.gameHub.domain.UserSearchDTO;
@@ -31,11 +34,13 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User getUserByNo(int userNo) {
 		User userByNo = userRepository.getUserByNo(userNo);
+		String savedFileName = userRepository.getSavedFileName(userNo);
 		
 		if (userByNo == null) {
 			throw new NoUserFoundException(userNo);
 		}
 		
+		userByNo.setSavedFileName(savedFileName);
 		return userByNo;
 	}
 
@@ -67,7 +72,31 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public void saveImageFile(User user, MultipartFile file) {
+		MultipartFile imageFile = file;
+		
+		if (imageFile != null && !imageFile.isEmpty()) {
+			String originalName = imageFile.getOriginalFilename();
+			String savedName = UUID.randomUUID().toString() + "_" + originalName;
+			File savedImageFile = new File("C:\\upload\\app_user", savedName);
+			
+			try {
+				imageFile.transferTo(savedImageFile);
+				user.setSavedFileName(savedName);
+				System.out.println("이미지 업로드 성공: [" + savedImageFile.getPath() + "]");
+			} catch (Exception e) {
+				throw new RuntimeException("이미지 업로드 실패", e);
+			}
+			
+		} else {
+			System.out.println("이미지 변경 없음");
+		}
+		
+	}
+
+	@Override
 	public void setNewUser(User newUser) {
+		saveImageFile(newUser, newUser.getSavedFile());
 		userRepository.setNewUser(newUser);
 	}
 
@@ -75,6 +104,7 @@ public class UserServiceImpl implements UserService {
 	public void setEditUser(User editUser) {
 		
 		User originUser = userRepository.getUserByNo(editUser.getUserNo());
+		String originFileName = userRepository.getSavedFileName(editUser.getUserNo());
 		
 		if (editUser.getUserPw() == null || editUser.getUserPw().isEmpty()) {
 			editUser.setUserPw(originUser.getUserPw());
@@ -84,6 +114,11 @@ public class UserServiceImpl implements UserService {
 			editUser.setUserBirthDate(originUser.getUserBirthDate());
 		}
 		
+		if (editUser.getSavedFile() == null || editUser.getSavedFile().isEmpty()) {
+			editUser.setSavedFileName(originFileName);
+		}
+		
+		saveImageFile(editUser, editUser.getSavedFile());
 		userRepository.setEditUser(editUser);
 	}
 
@@ -91,7 +126,5 @@ public class UserServiceImpl implements UserService {
 	public void setDeleteUser(int userNo) {
 		userRepository.setDeleteUser(userNo);
 	}
-	
-	
-	
+
 }

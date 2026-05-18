@@ -3,6 +3,8 @@ package com.gameHub.service;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.gameHub.domain.Game;
 
 public interface GameService {
@@ -24,6 +26,8 @@ public interface GameService {
 	List<Game> getGamesByReleaseDate(LocalDate startDate, LocalDate endDate);
 
 	List<Game> getGamesByAgeRating(LocalDate userBirthDate);
+	
+	void saveImageFile(Game game, MultipartFile file);
 
 	void setNewGame(Game newGame);
 

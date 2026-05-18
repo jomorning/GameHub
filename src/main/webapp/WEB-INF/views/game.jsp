@@ -14,6 +14,7 @@
 	<a href="${gamesURL}">게임 목록</a>
 	<br>
 	<h3>게임 상세 정보</h3>
+	<img src="<c:url value='/upload/game/${gameByNo.savedFileName}'/>" style="width: 20%">
 	<p>게임명: ${gameByNo.gameName}
 	<p>장르: ${gameByNo.genre}
 	<p>연령 제한: ${gameByNo.gameAgeRating}

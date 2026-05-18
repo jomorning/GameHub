@@ -113,7 +113,7 @@ public class UserSearchDTO {
 	public void setEndCreatedTime(LocalDateTime endCreatedTime) {
 		this.endCreatedTime = endCreatedTime;
 	}
-
+	
 
 	public int getPageNum() {
 		return pageNum;

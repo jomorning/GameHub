@@ -11,7 +11,7 @@
 </head>
 <body>
 
-	<a href="<c:url value='/'/>">메인으로 돌아가기</a>
+	<a href="<c:url value='/main'/>">메인으로 돌아가기</a>
 	
 	<c:url value="/game/search" var="searchGameURL"/>
 	
@@ -26,6 +26,7 @@
 	</form:form>
 
 	<c:forEach var="games" items="${games}">
+		<img src="<c:url value='/upload/game/${games.savedFileName}'/>" style="width: 20%">
 		<p>게임명: ${games.gameName}
 		<p>장르: ${games.genre}
 		<p>개발사: ${games.gameDeveloper}

@@ -34,13 +34,11 @@ public class MainController {
 			User userById = userService.getUserById(loginUserId);
 			int loginUserNo = userById.getUserNo();
 			
-			LocalDate userBirthDate = userById.getUserBirthDate();
-			int userAge = (LocalDate.now().getYear() - userBirthDate.getYear());
+			// LocalDate userBirthDate = userById.getUserBirthDate();
+			// int userAge = (LocalDate.now().getYear() - userBirthDate.getYear());
 			
 			System.out.println("로그인 유저 ID: " + loginUserId);
 			System.out.println("로그인 유저 No: " + loginUserNo);
-			System.out.println("로그인 유저 Birth: " + userBirthDate);
-			System.out.println("로그인 유저 Age: " + userAge);
 			
 			session.setAttribute("loginUserId", loginUserId);
 			session.setAttribute("loginUserNo", loginUserNo);

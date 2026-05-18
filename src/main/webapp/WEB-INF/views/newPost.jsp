@@ -10,7 +10,7 @@
 <title>게시글 등록</title>
 </head>
 <body>
-	<a href="<c:url value='/'/>">메인으로 돌아가기</a>
+	<a href="<c:url value='/main'/>">메인으로 돌아가기</a>
 	
 	<c:url value="/post" var="newPostURL"/>
 	<form:form modelAttribute="postForm" action="${newPostURL}">

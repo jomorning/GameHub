@@ -8,6 +8,12 @@ import org.springframework.jdbc.core.RowMapper;
 import com.gameHub.domain.User;
 
 public class UserRowMapper implements RowMapper<User> {
+	
+	private boolean isJoined;
+
+	public UserRowMapper(boolean isJoined) {
+		this.isJoined = isJoined;
+	}
 
 	@Override
 	public User mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -21,6 +27,11 @@ public class UserRowMapper implements RowMapper<User> {
 		user.setUserEmail(rs.getString("user_email"));
 		user.setUserRole(rs.getString("user_role"));
 		user.setUserCreatedAt(rs.getTimestamp("user_created_at").toLocalDateTime());
+		
+		if (isJoined) {
+			user.setSavedFileName(rs.getString("saved_name"));
+		}
+		
 		return user;
 	}
 	

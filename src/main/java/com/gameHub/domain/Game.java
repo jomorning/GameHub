@@ -2,6 +2,8 @@ package com.gameHub.domain;
 
 import java.time.LocalDate;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class Game {
 	
 	private int gameNo;
@@ -12,6 +14,9 @@ public class Game {
 	private String gameDeveloper;
 	private String gamePublisher;
 	private LocalDate gameReleaseDate;
+	
+	private MultipartFile savedFile;
+	private String savedFileName;
 	
 	public Game() {
 	}
@@ -78,6 +83,22 @@ public class Game {
 
 	public void setGameReleaseDate(LocalDate gameReleaseDate) {
 		this.gameReleaseDate = gameReleaseDate;
+	}
+
+	public MultipartFile getSavedFile() {
+		return savedFile;
+	}
+
+	public void setSavedFile(MultipartFile savedFile) {
+		this.savedFile = savedFile;
+	}
+
+	public String getSavedFileName() {
+		return savedFileName;
+	}
+
+	public void setSavedFileName(String savedFileName) {
+		this.savedFileName = savedFileName;
 	}
 
 }

@@ -10,7 +10,7 @@
 <title>사용자 목록</title>
 </head>
 <body>
-	<a href="<c:url value='/'/>">메인으로 돌아가기</a>
+	<a href="<c:url value='/main'/>">메인으로 돌아가기</a>
 	
 	<c:url value="/user/search" var="usersURL"/>
 	
@@ -39,11 +39,11 @@
 	</form:form>
 
 	<c:forEach var="users" items="${users}">
+		<img src="<c:url value='/upload/app_user/${users.savedFileName}'/>" style="width: 10%">
 		<p>사용자 번호: ${users.userNo}
 		<p>사용자 ID: ${users.userId}
 		<p>사용자 이름: ${users.userName}
 		<p>사용자 권한: ${users.userRole}<br>
-		
 		<c:url value="/user/${users.userNo}" var="userURL"/>
 		<a href="${userURL}">상세 정보</a>
 		<hr>

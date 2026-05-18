@@ -19,8 +19,6 @@ import com.gameHub.exception.GameAgeRatingException;
 import com.gameHub.exception.NoGameFoundException;
 import com.gameHub.service.GameService;
 
-import jakarta.servlet.http.HttpSession;
-
 @Controller
 public class GameController {
 	

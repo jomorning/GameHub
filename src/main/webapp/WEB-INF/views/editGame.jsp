@@ -13,8 +13,9 @@
 	<c:url value="/game/search" var="gamesURL"/>
 	<a href="${gamesURL}">게임 목록</a>
 	<c:url value="/game/${editGame.gameNo}" var="editGameURL"/>
-	<form:form modelAttribute="editGame" action="${editGameURL}" method="PUT">
+	<form:form modelAttribute="editGame" action="${editGameURL}" method="PUT" enctype="multipart/form-data">
 		<h3>게임 정보 수정</h3>
+		<p>게임 관리번호: <form:input type="number" path="gameNo" readonly="true"/><br>
 		<p>변경할 게임명: <form:input path="gameName"/><br>
 		<p>변경할 장르: <form:input path="genre"/><br>
 		<p>변경할 연령 제한: <form:input type="number" path="gameAgeRating"/><br>
@@ -22,6 +23,8 @@
 		<p>변경할 개발사: <form:input path="gameDeveloper"/><br>
 		<p>변경할 배급사: <form:input path="gamePublisher"/><br>
 		<p>변경할 출시일: <form:input type="date" path="gameReleaseDate"/>
+		<p>변경할 대표 이미지: <form:input type="file" path="savedFile"/>
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 		<br>
 		<button>게임 정보 수정</button>
 	</form:form>

@@ -11,6 +11,8 @@ public interface GameRepository {
 	
 	List<Game> searchGames(Game gameSearchDTO, int startNum, int limit);
 	
+	String getSavedFileName(int referenceNo);
+	
 	List<Game> getAllGames();
 	
 	Game getGameByNo(int gameNo);

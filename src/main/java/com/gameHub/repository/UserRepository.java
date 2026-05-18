@@ -10,6 +10,8 @@ public interface UserRepository {
 	int countAllUsers();
 
 	List<User> getAllUsers();
+	
+	String getSavedFileName(int referenceNo);
 
 	User getUserByNo(int userNo);
 	

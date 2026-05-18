@@ -13,11 +13,14 @@
    <annotation-driven />
 
    <resources mapping="/resources/**" location="/resources/" />
+   <resources mapping="/upload/**" location="file:///C:/upload/" />
 
    <beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
       <beans:property name="prefix" value="/WEB-INF/views/" />
       <beans:property name="suffix" value=".jsp" />
-   </beans:bean> 
+   </beans:bean>
+   
+   <beans:bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver" /> 
 
    <context:component-scan base-package="com.gameHub.controller, com.gameHub.exception"/>
 </beans:beans>
