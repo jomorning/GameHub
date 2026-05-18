@@ -48,6 +48,10 @@
 		<a href="${userURL}">상세 정보</a>
 		<hr>
 	</c:forEach>
+	
+	<c:forEach var="page" begin="1" end="${totalPages}">
+		<a href="<c:url value='/user/search?pageNum=${page}'/>">${page}</a>
+	</c:forEach>
 
 </body>
 </html>

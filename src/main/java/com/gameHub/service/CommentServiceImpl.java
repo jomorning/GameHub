@@ -17,12 +17,6 @@ public class CommentServiceImpl implements CommentService {
 	CommentRepository commentRepository;
 
 	@Override
-	public List<CommentResponseDTO> getCommentsByPost(int postNo) {
-		List<CommentResponseDTO> commentsByPost = commentRepository.getCommentsByPost(postNo) ;
-		return commentsByPost;
-	}
-
-	@Override
 	public Comment getCommentByNo(int commentNo) {
 		Comment commentByNo = commentRepository.getCommentByNo(commentNo);
 		
@@ -32,11 +26,21 @@ public class CommentServiceImpl implements CommentService {
 		
 		return commentByNo;
 	}
+	
+	@Override
+	public List<CommentResponseDTO> getCommentsByPost(int postNo) {
+		List<CommentResponseDTO> commentsByPost = commentRepository.getCommentsByPost(postNo);
+		return commentsByPost;
+	}
+
+	@Override
+	public int getCommentCountByPost(int postNo) {
+		int commentCountByPost = commentRepository.getCommentCountByPost(postNo);
+		return commentCountByPost;
+	}
 
 	@Override
 	public void setNewComment(Comment newComment) {
-		// 임시 댓글 등록자 UserNo. 3 (jomorning)
-		newComment.setUserNo(3);
 		commentRepository.setNewComment(newComment);
 	}
 

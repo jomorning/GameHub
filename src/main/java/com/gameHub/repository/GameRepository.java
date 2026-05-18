@@ -7,7 +7,9 @@ import com.gameHub.domain.Game;
 
 public interface GameRepository {
 	
-	List<Game> searchGames(Game gameSearchDTO);
+	int countAllGames();
+	
+	List<Game> searchGames(Game gameSearchDTO, int startNum, int limit);
 	
 	List<Game> getAllGames();
 	
@@ -23,7 +25,7 @@ public interface GameRepository {
 	
 	List<Game> getGamesByReleaseDate(LocalDate startDate, LocalDate endDate);
 	
-	List<Game> getGamesByAgeRating(LocalDate userBirthDate);
+	List<Game> getGamesByAgeRating(int userAge);
 	
 	void setNewGame(Game newGame);
 	

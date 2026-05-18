@@ -7,9 +7,11 @@ import com.gameHub.domain.CommentResponseDTO;
 
 public interface CommentRepository {
 	
+	Comment getCommentByNo(int commentNo);
+	
 	List<CommentResponseDTO> getCommentsByPost(int postNo);
 	
-	Comment getCommentByNo(int commentNo);
+	int getCommentCountByPost(int postNo);
 	
 	void setNewComment(Comment newComment);
 	

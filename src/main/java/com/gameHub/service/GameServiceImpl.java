@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.gameHub.domain.Game;
 import com.gameHub.exception.NoGameFoundException;
 import com.gameHub.repository.GameRepository;
+import com.gameHub.repository.UserRepository;
 
 @Service
 public class GameServiceImpl implements GameService {
@@ -16,9 +17,18 @@ public class GameServiceImpl implements GameService {
 	@Autowired
 	GameRepository gameRepository;
 	
+	@Autowired
+	UserRepository userRepository;
+	
 	@Override
-	public List<Game> searchGames(Game gameSearchDTO) {
-		List<Game> gamesBySearch = gameRepository.searchGames(gameSearchDTO);
+	public int countAllGames() {
+		int countAllGames = gameRepository.countAllGames();
+		return countAllGames;
+	}
+
+	@Override
+	public List<Game> searchGames(Game gameSearchDTO, int startNum, int limit) {
+		List<Game> gamesBySearch = gameRepository.searchGames(gameSearchDTO, startNum, limit);
 		return gamesBySearch;
 	}
 
@@ -35,6 +45,7 @@ public class GameServiceImpl implements GameService {
 		if (gameByNo == null) {
 			throw new NoGameFoundException(gameNo);
 		}
+	
 		return gameByNo;
 	}
 
@@ -64,7 +75,8 @@ public class GameServiceImpl implements GameService {
 
 	@Override
 	public List<Game> getGamesByAgeRating(LocalDate userBirthDate) {
-		List<Game> gamesByAgeRating = gameRepository.getGamesByAgeRating(userBirthDate);
+		int userAge = (LocalDate.now().getYear() - userBirthDate.getYear());
+		List<Game> gamesByAgeRating = gameRepository.getGamesByAgeRating(userAge);
 		return gamesByAgeRating;
 	}
 

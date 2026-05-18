@@ -7,7 +7,9 @@ import com.gameHub.domain.Game;
 
 public interface GameService {
 	
-	List<Game> searchGames(Game gameSearchDTO);
+	int countAllGames();
+	
+	List<Game> searchGames(Game gameSearchDTO, int startNum, int limit);
 
 	List<Game> getAllGames();
 

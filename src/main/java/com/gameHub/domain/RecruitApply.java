@@ -6,6 +6,7 @@ public class RecruitApply {
 	
 	private int applyNo;
 	private int userNo;
+	private String userId;
 	private int postNo;
 	private String applyStatus;
 	private LocalDateTime applyCreatedAt;
@@ -28,6 +29,14 @@ public class RecruitApply {
 
 	public void setUserNo(int userNo) {
 		this.userNo = userNo;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	public int getPostNo() {
@@ -61,5 +70,5 @@ public class RecruitApply {
 	public void setApplyUpdatedAt(LocalDateTime applyUpdatedAt) {
 		this.applyUpdatedAt = applyUpdatedAt;
 	}
-	
+
 }

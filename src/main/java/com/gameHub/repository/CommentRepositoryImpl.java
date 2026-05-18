@@ -20,14 +20,7 @@ public class CommentRepositoryImpl implements CommentRepository {
 	void setJdbcTemplate(DataSource dataSource) {
 		this.template = new JdbcTemplate(dataSource);
 	}
-
-	@Override
-	public List<CommentResponseDTO> getCommentsByPost(int postNo) {
-		String SQL = "SELECT comment.comment_no, app_user.user_id, comment.comment_content, comment.comment_created_at, comment.comment_updated_at FROM comment JOIN post ON comment.post_no = post.post_no JOIN app_user ON comment.user_no = app_user.user_no WHERE post.post_no = ?";
-		List<CommentResponseDTO> commentsByPost = template.query(SQL, new JoinedCommentsRowMapper(), postNo);
-		return commentsByPost;
-	}
-
+	
 	@Override
 	public Comment getCommentByNo(int commentNo) {
 		String SQL = "SELECT * FROM comment WHERE comment_no = ?";
@@ -39,6 +32,20 @@ public class CommentRepositoryImpl implements CommentRepository {
 		
 		Comment commentByNo = commentByNoTemp.get(0);
 		return commentByNo;
+	}
+
+	@Override
+	public List<CommentResponseDTO> getCommentsByPost(int postNo) {
+		String SQL = "SELECT comment.comment_no, app_user.user_id, comment.comment_content, comment.comment_created_at, comment.comment_updated_at FROM comment JOIN post ON comment.post_no = post.post_no JOIN app_user ON comment.user_no = app_user.user_no WHERE post.post_no = ?";
+		List<CommentResponseDTO> commentsByPost = template.query(SQL, new JoinedCommentsRowMapper(), postNo);
+		return commentsByPost;
+	}
+
+	@Override
+	public int getCommentCountByPost(int postNo) {
+		String SQL = "SELECT COUNT(*) FROM comment WHERE post_no = ?";
+		int commentCountByPost = template.queryForObject(SQL, Integer.class, postNo); 
+		return commentCountByPost;
 	}
 
 	@Override

@@ -26,6 +26,14 @@ public class UserRepositoryImpl implements UserRepository {
 	}
 
 	@Override
+	public int countAllUsers() {
+		String SQL = "SELECT COUNT(*) FROM app_user";
+		int countAllUsers = template.queryForObject(SQL, Integer.class);
+		System.out.println(countAllUsers);
+		return countAllUsers;
+	}
+
+	@Override
 	public List<User> getAllUsers() {
 		String SQL = "SELECT * FROM app_user";
 		List<User> allUsers = template.query(SQL, new UserRowMapper());
@@ -74,7 +82,7 @@ public class UserRepositoryImpl implements UserRepository {
 		}
 
 		if (userSearchDTO.getUserName() != null && !userSearchDTO.getUserName().isEmpty()) {
-			SQL.append(" AND user_Name LIKE ? ");
+			SQL.append(" AND user_name LIKE ? ");
 			params.add(userSearchDTO.getUserName() + "%");
 		}
 
@@ -82,6 +90,10 @@ public class UserRepositoryImpl implements UserRepository {
 			SQL.append(" AND user_email LIKE ? ");
 			params.add(userSearchDTO.getUserEmail() + "%");
 		}
+		
+		SQL.append(" ORDER BY user_no LIMIT ?, ?");
+		params.add(userSearchDTO.getStartNum());
+		params.add(userSearchDTO.getLimit());
 
 		List<User> usersByDetail = template.query(SQL.toString(), new UserRowMapper(), params.toArray());
 		return usersByDetail;
@@ -98,7 +110,7 @@ public class UserRepositoryImpl implements UserRepository {
 		}
 
 		if (userSearchDTO.getUserName() != null && !userSearchDTO.getUserName().isEmpty()) {
-			SQL.append(" AND user_Name LIKE ? ");
+			SQL.append(" AND user_name LIKE ? ");
 			params.add(userSearchDTO.getUserName() + "%");
 		}
 
@@ -119,6 +131,10 @@ public class UserRepositoryImpl implements UserRepository {
 			params.add(userSearchDTO.getStartCreatedTime());
 			params.add(userSearchDTO.getEndCreatedTime());
 		}
+		
+		SQL.append(" ORDER BY user_no LIMIT ?, ?");
+		params.add(userSearchDTO.getStartNum());
+		params.add(userSearchDTO.getLimit());
 
 		List<User> usersByCondition = template.query(SQL.toString(), new UserRowMapper(), params.toArray());
 		return usersByCondition;

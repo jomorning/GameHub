@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import com.gameHub.domain.PostForm;
 import com.gameHub.domain.Recruit;
-import com.gameHub.domain.RecruitRowMapper;
 
 @Repository
 public class RecruitRepositoryImpl implements RecruitRepository {
@@ -33,6 +32,11 @@ public class RecruitRepositoryImpl implements RecruitRepository {
 	public Recruit getRecruitByPost(int postNo) {
 		String SQL = "SELECT * FROM recruit WHERE post_no = ?";
 		List<Recruit> recruitByPostTemp = template.query(SQL, new RecruitRowMapper(), postNo);
+		
+		if (recruitByPostTemp.isEmpty()) {
+			return null;
+		}
+		
 		Recruit recruitByPost = recruitByPostTemp.get(0);
 		updateCurrentMember(postNo);
 		return recruitByPost;
@@ -43,6 +47,8 @@ public class RecruitRepositoryImpl implements RecruitRepository {
 		System.out.println("받은 PostNO(PK): " + postForm.getPostNo());
 		String SQL = "INSERT INTO recruit(post_no, recruit_position, recruit_max_member) VALUES(?,?,?)";
 		template.update(SQL, postForm.getPostNo(), postForm.getRecruitPosition(), postForm.getRecruitMaxMember());
+		String SQLforAddDefaultAppliedUser = "INSERT INTO recruit_apply(user_no, post_no) VALUES(?,?)";
+		template.update(SQLforAddDefaultAppliedUser, postForm.getUserNo(), postForm.getPostNo());
 	}
 
 	@Override

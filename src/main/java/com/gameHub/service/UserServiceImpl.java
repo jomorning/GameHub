@@ -17,6 +17,12 @@ public class UserServiceImpl implements UserService {
 	UserRepository userRepository;
 	
 	@Override
+	public int countAllUsers() {
+		int countAllUsers = userRepository.countAllUsers();
+		return countAllUsers;
+	}
+	
+	@Override
 	public List<User> getAllUsers() {
 		List<User> allUsers = userRepository.getAllUsers();
 		return allUsers;
@@ -34,9 +40,19 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public User getUserById(String userId) {
+		User userById = userRepository.getUserById(userId);
+		return userById;
+	}
+
+	@Override
 	public List<User> searchUsers(UserSearchDTO userSearchDTO) {
 		
 		List<User> usersBySearch = null;
+		
+		int pageNum = userSearchDTO.getPageNum();
+		int limit = userSearchDTO.getLimit();
+		userSearchDTO.setStartNum(limit * (pageNum - 1));
 		
 		switch (userSearchDTO.getSearchMode()) {
 		case "detail":

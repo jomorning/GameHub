@@ -21,17 +21,25 @@ import com.gameHub.domain.PostForm;
 import com.gameHub.domain.PostResponseDTO;
 import com.gameHub.domain.Recruit;
 import com.gameHub.domain.RecruitApply;
+import com.gameHub.exception.GameAgeRatingException;
 import com.gameHub.exception.NoPostFoundException;
+import com.gameHub.exception.NoRecruitFoundException;
 import com.gameHub.service.CommentService;
 import com.gameHub.service.PostService;
 import com.gameHub.service.RecruitApplyService;
 import com.gameHub.service.RecruitService;
+import com.gameHub.service.UserService;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class PostController {
 	
 	@Autowired
 	PostService postService;
+	
+	@Autowired
+	UserService userService;
 	
 	@Autowired
 	RecruitService recruitService;
@@ -49,11 +57,13 @@ public class PostController {
 		return "posts";
 	}
 	
-	
 	@GetMapping("/post/{postNo}")
-	public String getPostByNo(@PathVariable("postNo") int postNo, Model model, @ModelAttribute("newComment") Comment newComment, @ModelAttribute("editApply") RecruitApply editApply) {
-		// post.jsp 내부에 Comment, RecruitApply 컨트롤러가 매핑되어 있으므로,
-		// 두 컨트롤러에 post.jsp form 태그에 대한 Model.addAttribute() 바인딩 또는 @ModelAttribute 바인딩을 명시적으로 해야 함.
+	public String getPostByNo(@PathVariable("postNo") int postNo, Model model, @ModelAttribute("newComment") Comment newComment, HttpSession session) {
+		
+		int loginUserNo = (Integer) session.getAttribute("loginUserNo");
+		
+		// post.jsp 내부에 Comment 객체 바인딩으로 인해
+		// Model.addAttribute() 바인딩 또는 @ModelAttribute 바인딩을 명시적으로 해야 함.
 		// 바인딩 누락 시, newComment 에 대한 바인딩 객체를 인식하지 못 함.
 		Post postByNo = postService.getPostByNo(postNo);
 		List<CommentResponseDTO> commentsByPost = commentService.getCommentsByPost(postNo);
@@ -62,12 +72,13 @@ public class PostController {
 		
 		if (postByNo.getPostType().equals("RECRUIT")) {
 			Recruit recruitByPost = recruitService.getRecruitByPost(postNo);
-			System.out.println("CM" + recruitByPost.getRecruitCurrentMember());
-			System.out.println("MM" + recruitByPost.getRecruitMaxMember());
 			model.addAttribute("recruitByPost", recruitByPost);
-			// 임시 모집 지원자 UserNo. 4 current_member 를 보여주기 위함.
-			RecruitApply applyByNo = recruitApplyService.getApplyByPostAndUser(postNo, 4);
+			
+			RecruitApply applyByNo = recruitApplyService.getApplyByPostAndUser(postNo, loginUserNo);
 			model.addAttribute("applyByNo", applyByNo);
+			
+			List<RecruitApply> appliesByRecruit = recruitApplyService.getAppliesByRecruit(postNo);
+			model.addAttribute("appliesByRecruit", appliesByRecruit);
 		}
 		
 		return "post";
@@ -79,13 +90,28 @@ public class PostController {
 		return "noPostFoundException";
 	}
 	
+	@ExceptionHandler(value={(NoRecruitFoundException.class)})
+	public String noRecruitFoundHandler(NoRecruitFoundException exception, Model model) {
+		model.addAttribute("invalidRecruitNo", exception.getInvalidRecruitNo());
+		return "noRecruitFoundException";
+	}
+	
+	@ExceptionHandler(value={(GameAgeRatingException.class)})
+	public String gameAgeRatingHandler(GameAgeRatingException exception, Model model) {
+		model.addAttribute("gameName", exception.getGameName());
+		model.addAttribute("gameAgeRating", exception.getGameAgeRating());
+		return "gameAgeRatingException";
+	}
+	
 	@GetMapping("/post/new")
 	public String getNewPostForm(@ModelAttribute("postForm") PostForm postForm) {
 		return "newPost";
 	}
 	
 	@PostMapping("/post")
-	public String submitNewPostForm(@ModelAttribute("postForm") PostForm postForm) {
+	public String submitNewPostForm(@ModelAttribute("postForm") PostForm postForm, HttpSession session) {
+		int loginUserNo = (Integer) session.getAttribute("loginUserNo");
+		postForm.setUserNo(loginUserNo);
 		postService.setNewPost(postForm);
 		return "redirect:/post/" + postForm.getPostNo();
 	}
@@ -94,6 +120,7 @@ public class PostController {
 	public String getEditPostForm(@PathVariable("postNo") int postNo, @ModelAttribute("editPostForm") PostForm editPostForm, Model model) {
 		Post postByNo = postService.getPostByNo(postNo);
 		Recruit recruitByNo = recruitService.getRecruitByPost(postNo);
+		editPostForm.setUserNo(postByNo.getUserNo());
 		editPostForm.setPostType(postByNo.getPostType());
 		editPostForm.setPostTitle(postByNo.getPostTitle());
 		editPostForm.setPostContent(postByNo.getPostContent());
@@ -105,14 +132,17 @@ public class PostController {
 	}
 	
 	@PutMapping("/post/{postNo}")
-	public String submitEditPostForm(@ModelAttribute("editPostForm") PostForm editPostForm) {
-		postService.setEditPost(editPostForm);	
+	public String submitEditPostForm(@ModelAttribute("editPostForm") PostForm editPostForm, HttpSession session) {
+		int loginUserNo = (Integer) session.getAttribute("loginUserNo");
+		postService.setEditPost(editPostForm, loginUserNo);	
 		return "redirect:/post/" + editPostForm.getPostNo();
 	}
 	
 	@DeleteMapping("/post/{postNo}")
-	public String submitDeletePostForm(@PathVariable("postNo") int postNo) {
-		postService.setDeletePost(postNo);
+	public String submitDeletePostForm(@PathVariable("postNo") int postNo, HttpSession session) {
+		int loginUserNo = (Integer) session.getAttribute("loginUserNo");
+		String loginUserId = (String) session.getAttribute("loginUserId");
+		postService.setDeletePost(postNo, loginUserNo, loginUserId);
 		return "redirect:/post/search";
 	}
 

@@ -34,5 +34,5 @@
 	</beans:bean>
 	
 	<!-- Spring Security 비밀번호 암호화 -->
-	<!-- <beans:bean id="passwordEncoder" class="org.springframework.security.crypto.password.NoOpPasswordEncoder" factory-method="getInstance" /> -->
+	<beans:bean id="passwordEncoder" class="org.springframework.security.crypto.password.NoOpPasswordEncoder" factory-method="getInstance" />
 </beans:beans>

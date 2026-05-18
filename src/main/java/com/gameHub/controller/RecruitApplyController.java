@@ -2,15 +2,17 @@ package com.gameHub.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 
 import com.gameHub.domain.RecruitApply;
+import com.gameHub.exception.ApplyCapacityException;
 import com.gameHub.service.RecruitApplyService;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class RecruitApplyController {
@@ -19,12 +21,21 @@ public class RecruitApplyController {
 	RecruitApplyService recruitApplyService;
 	
 	@PostMapping("/post/{postNo}/apply")
-	public String submitNewApply(@PathVariable("postNo") int postNo, @ModelAttribute("newRecruitApply") RecruitApply newApply) {
+	public String submitNewApply(@PathVariable("postNo") int postNo, RecruitApply newApply, HttpSession session, Model model) {
+		int loginUserNo = (Integer) session.getAttribute("loginUserNo");
+		String loginUserId = (String) session.getAttribute("loginUserId");
 		newApply.setPostNo(postNo);
-		// 임시 모집 지원자 UserNo. 4
-		newApply.setUserNo(4);
+		newApply.setUserNo(loginUserNo);
+		newApply.setUserId(loginUserId);
 		recruitApplyService.setNewApply(newApply);
+		model.addAttribute("postNo", postNo);
 		return "redirect:/post/" + postNo;
+	}
+	
+	@ExceptionHandler(value={(ApplyCapacityException.class)})
+	public String ApplyCapacityHandler(ApplyCapacityException exception, Model model) {
+		model.addAttribute("deniedUserId", exception.getDeniedUserId());
+		return "applyCapacityException";
 	}
 	
 	@DeleteMapping("/post/{postNo}/apply/{userNo}")

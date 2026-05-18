@@ -6,6 +6,8 @@ import com.gameHub.domain.User;
 import com.gameHub.domain.UserSearchDTO;
 
 public interface UserRepository {
+	
+	int countAllUsers();
 
 	List<User> getAllUsers();
 

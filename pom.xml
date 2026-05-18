@@ -73,6 +73,27 @@
 			<artifactId>HikariCP</artifactId>
 			<version>5.1.0</version>
 		</dependency>
+		
+			<!-- 시큐리티 필터 및 웹 보안 인프라 추가 -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>6.3.8</version>
+		</dependency>
+		
+		<!-- 스프링 시큐리티 XML 네임스페이스 사용을 위한 모듈 -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>6.3.8</version>
+		</dependency>
+		
+		<!-- JSP에서 스프링 시큐리티 태그 사용하기 위해 추가-->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-taglibs</artifactId>
+			<version>6.3.8</version>
+		</dependency>
 
 	</dependencies>
 

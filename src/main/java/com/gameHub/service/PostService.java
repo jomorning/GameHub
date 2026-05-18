@@ -14,8 +14,8 @@ public interface PostService {
 	
 	void setNewPost(PostForm postForm);
 	
-	void setEditPost(PostForm postForm);
+	void setEditPost(PostForm postForm, int loginUserNo);
 
-	void setDeletePost(int postNo);
+	void setDeletePost(int postNo, int loginUserNo, String loginUserId);
 
 }

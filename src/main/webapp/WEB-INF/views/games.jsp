@@ -39,6 +39,10 @@
 		
 		<hr>
 	</c:forEach>
+	
+	<c:forEach var="page" begin="1" end="${totalPages}">
+		<a href="<c:url value='/game/search?pageNum=${page}'/>">${page}</a>
+	</c:forEach>
 
 </body>
 </html>

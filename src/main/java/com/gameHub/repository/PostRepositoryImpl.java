@@ -8,9 +8,6 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.gameHub.domain.Post;
@@ -38,6 +35,8 @@ public class PostRepositoryImpl implements PostRepository {
 	public Post getPostByNo(int postNo) {
 		String SQL = "SELECT * FROM post WHERE post_no = ?";
 		List<Post> postByNoTemp = template.query(SQL, new PostRowMapper(), postNo);
+		String SQL_i = "UPDATE post SET view_count = view_count + 1 WHERE post_no = ?";
+		template.update(SQL_i, postNo);
 
 		if (postByNoTemp.isEmpty()) {
 			return null;
@@ -144,21 +143,24 @@ public class PostRepositoryImpl implements PostRepository {
 
 	@Override
 	public void setEditPost(PostForm postForm) {
-		String SQL = "UPDATE post SET post_title = ?, post_content = ? WHERE post_no = ?";
-		template.update(SQL, postForm.getPostTitle(), postForm.getPostContent(), postForm.getPostNo());
+		String SQL = "UPDATE post SET post_title = ?, post_content = ?, post_updated_at = NOW() WHERE post_no = ? AND user_no = ?";
+		template.update(SQL, postForm.getPostTitle(), postForm.getPostContent(), postForm.getPostNo(), postForm.getUserNo());
 	}
 
 	@Override
 	public void setDeletePost(int postNo) {
 		// PostNo 를 FK 참조하는 comment, recruit 열부터 삭제
 		// 추후 ON DELETE CASCADE 적용 고려할 것
+		String deleteLikeByPostNo = "DELETE FROM post_like WHERE post_no = ?";
+		template.update(deleteLikeByPostNo, postNo);
 		String deleteCommentByPostNo = "DELETE FROM comment WHERE post_no = ?";
 		template.update(deleteCommentByPostNo, postNo);
+		String deleteRecruitApplyByPostNo = "DELETE FROM recruit_apply WHERE post_no = ?";
+		template.update(deleteRecruitApplyByPostNo, postNo);
 		String deleteRecruitByPostNo = "DELETE FROM recruit WHERE post_no = ?";
 		template.update(deleteRecruitByPostNo, postNo);
 		String SQL = "DELETE FROM post WHERE post_no = ?";
 		template.update(SQL, postNo);
-		
 	}
 
 }

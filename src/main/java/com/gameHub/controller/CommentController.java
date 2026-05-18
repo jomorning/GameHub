@@ -15,6 +15,8 @@ import com.gameHub.domain.Comment;
 import com.gameHub.exception.NoCommentFoundException;
 import com.gameHub.service.CommentService;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class CommentController {
 	
@@ -28,13 +30,21 @@ public class CommentController {
 		return "comment";
 	}
 	
+	@ExceptionHandler(value={(NoCommentFoundException.class)})
+	public String noCommentFoundHandler(NoCommentFoundException exception, Model model) {
+		model.addAttribute("invalidCommentNo", exception.getInvalidCommentNo());
+		return "noCommentFoundException";
+	}
+	
 	@GetMapping("/post/{postNo}/comment/new")
 	public String getNewCommentForm(@ModelAttribute("newComment") Comment newComment) {
 		return "post";
 	}
 	
 	@PostMapping("/post/{postNo}/comment")
-	public String submitNewCommentForm(@ModelAttribute("newComment") Comment newComment, @PathVariable("postNo") int postNo) {
+	public String submitNewCommentForm(@ModelAttribute("newComment") Comment newComment, @PathVariable("postNo") int postNo, Model model, HttpSession session) {
+		int loginUserNo = (Integer) session.getAttribute("loginUserNo");
+		newComment.setUserNo(loginUserNo);
 		commentService.setNewComment(newComment);
 		return "redirect:/post/" + postNo;
 	}
@@ -44,12 +54,6 @@ public class CommentController {
 		Comment commentByNo = commentService.getCommentByNo(commentNo);
 		model.addAttribute("editComment", commentByNo);
 		return "editComment";
-	}
-	
-	@ExceptionHandler(value={(NoCommentFoundException.class)})
-	public String noCommentFoundHandler(NoCommentFoundException exception, Model model) {
-		model.addAttribute("invalidCommentNo", exception.getInvalidCommentNo());
-		return "noCommentFoundException";
 	}
 	
 	@PutMapping("/post/{postNo}/comment/{commentNo}")

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.gameHub.domain.User;
 import com.gameHub.domain.UserSearchDTO;
@@ -25,9 +26,18 @@ public class UserController {
 	UserService userService;
 	
 	@GetMapping("/user/search")
-	public String searchUsers(@ModelAttribute("userSearchDTO") UserSearchDTO userSearchDTO, Model model) {
+	public String searchUsers(@RequestParam(value="pageNum", defaultValue="1") int pageNum, @RequestParam(value="limit", defaultValue="5") int limit, @ModelAttribute("userSearchDTO") UserSearchDTO userSearchDTO, Model model) {
+		
+		userSearchDTO.setPageNum(pageNum);
+		userSearchDTO.setLimit(limit);
+		
 		List<User> usersBySearch = userService.searchUsers(userSearchDTO);
-		model.addAttribute("users",usersBySearch);
+		
+		int countAllUsers = userService.countAllUsers();
+		int totalPages = (countAllUsers % limit) == 0 ? countAllUsers / limit : (countAllUsers / limit) + 1;
+		model.addAttribute("users", usersBySearch);
+		model.addAttribute("totalPages", totalPages);
+		model.addAttribute("userSearchDTO", userSearchDTO);
 		return "users";
 	}
 	
@@ -38,7 +48,7 @@ public class UserController {
 		return "user";
 	}
 	
-	@ExceptionHandler(value= {(NoUserFoundException.class)})
+	@ExceptionHandler(value={(NoUserFoundException.class)})
 	public String noUserFoundHandler(NoUserFoundException exception, Model model) {
 		model.addAttribute("invalidUserNo", exception.getInvalidUserNo());
 		return "noUserFoundException";

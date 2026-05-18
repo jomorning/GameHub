@@ -22,10 +22,20 @@
 	<br>
 	게시글 수정: ${postByNo.postUpdatedAt}
 	<br>
-	조회수: ${postByNo.viewCount}
+	댓글수: ${postByNo.commentCount} | 좋아요: ${postByNo.likeCount} | 조회수: ${postByNo.viewCount}
 	<hr>
 	${postByNo.postContent}
 	<hr>
+	
+	<c:url value="/post/${postByNo.postNo}/like" var="newLikeURL"/>
+	<form:form action="${newLikeURL}">
+		<button>좋아요</button>
+	</form:form>
+	
+	<c:url value="/post/${postByNo.postNo}/like" var="deleteLikeURL"/>
+	<form:form action="${deleteLikeURL}" method="DELETE">
+		<button>좋아요 취소</button>
+	</form:form>
 	
 	<c:url value="/post/${postByNo.postNo}/apply" var="newApplyURL"/>
 	<form:form action="${newApplyURL}">
@@ -40,6 +50,15 @@
 	현재 인원: ${recruitByPost.recruitMaxMember}
 	<br>
 	모집 인원: ${recruitByPost.recruitCurrentMember}
+	<hr>
+	
+	
+	${applyAvailable}
+	
+	참가:
+	<c:forEach var="appliedUsers" items="${appliesByRecruit}">
+		${appliedUsers.userId}
+	</c:forEach>
 	
 	<hr>
 	
@@ -60,9 +79,6 @@
 		${comments.commentContent}<br>
 		생성: ${comments.commentCreatedAt}<br>
 		수정: ${comments.commentUpdatedAt}
-		
-		<br>
-		[DEVELOPER] commentNo: ${comments.commentNo}
 		</h5>
 		
 		<c:url value="/post/${postByNo.postNo}/comment/${comments.commentNo}/edit" var="editCommentURL"/>

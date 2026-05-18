@@ -12,10 +12,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.gameHub.domain.Game;
+import com.gameHub.exception.GameAgeRatingException;
 import com.gameHub.exception.NoGameFoundException;
 import com.gameHub.service.GameService;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class GameController {
@@ -24,16 +28,14 @@ public class GameController {
 	GameService gameService;
 	
 	@GetMapping("/game/search")
-	public String searchGames(@ModelAttribute("game") Game searchGameDTO, Model model) {
-		List<Game> gamesBySearch = gameService.searchGames(searchGameDTO);
+	public String searchGames(@RequestParam(value="pageNum", defaultValue="1") int pageNum, @RequestParam(value="limit", defaultValue="5") int limit, @ModelAttribute("game") Game searchGameDTO, Model model) {
+		
+		int startNum = (limit * (pageNum - 1));
+		int countAllGames = gameService.countAllGames();
+		int totalPages = (countAllGames % limit) == 0 ? countAllGames / limit : (countAllGames / limit) + 1;
+		List<Game> gamesBySearch = gameService.searchGames(searchGameDTO, startNum, limit);
 		model.addAttribute("games", gamesBySearch);
-		return "games";
-	}
-	
-	@GetMapping("/game/all")
-	public String searchGames(Model model) {
-		List<Game> allGames = gameService.getAllGames();
-		model.addAttribute("games", allGames);
+		model.addAttribute("totalPages", totalPages);
 		return "games";
 	}
 	
@@ -48,6 +50,13 @@ public class GameController {
 	public String noGameFoundHandler(NoGameFoundException exception, Model model) {
 		model.addAttribute("invalidGameNo", exception.getInvalidGameNo());
 		return "noGameFoundException";
+	}
+	
+	@ExceptionHandler(value={(GameAgeRatingException.class)})
+	public String GameAgeRatingHandler(GameAgeRatingException exception, Model model) {
+		model.addAttribute("gameName", exception.getGameName());
+		model.addAttribute("gameAgeRating", exception.getGameAgeRating());
+		return "gameAgeRatingException";
 	}
 	
 	@GetMapping("/game/new")
