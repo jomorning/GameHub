@@ -13,8 +13,8 @@
 	
 	<c:url value="/login" var="loginURL"/>
 	<form action="${loginURL}" method="POST">
-		<p>아이디: <input type="text" name="userId" placeholder="아이디 입력"/>
-		<p>비밀번호: <input type="password" name="userPw" placeholder="비밀번호 입력"/>
+		<p>아이디: <input type="text" name="userId" placeholder="아이디 입력" value="admin"/>
+		<p>비밀번호: <input type="password" name="userPw" placeholder="비밀번호 입력" value="admin"/>
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		<h3>${failureReason}</h3>
 		<button>로그인</button>

@@ -92,7 +92,7 @@ public class GameRepositoryImpl implements GameRepository {
 	@Override
 	public Game getGameByName(String gameName) {
 		String SQL = "SELECT * FROM game WHERE game_name = ?";
-		List<Game> gameByNameTemp = template.query(SQL, new GameRowMapper(true), gameName);
+		List<Game> gameByNameTemp = template.query(SQL, new GameRowMapper(false), gameName);
 		
 		if (gameByNameTemp.isEmpty()) {
 			return null;

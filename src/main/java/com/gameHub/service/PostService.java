@@ -18,4 +18,5 @@ public interface PostService {
 
 	void setDeletePost(int postNo, int loginUserNo, String loginUserId);
 
+
 }

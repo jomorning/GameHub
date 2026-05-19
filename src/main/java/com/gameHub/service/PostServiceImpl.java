@@ -77,8 +77,7 @@ public class PostServiceImpl implements PostService {
 	public void setNewPost(PostForm postForm) {
 		String newPostGameName = postForm.getGameName();
 		Game newPostGame = gameRepository.getGameByName(newPostGameName);
-		postForm.setGameNo(newPostGame.getGameNo());
-
+		postForm.setGameNo(newPostGame.getGameNo()); 
 		int returnedPostNo = postRepository.setNewPost(postForm);
 		postForm.setPostNo(returnedPostNo);
 

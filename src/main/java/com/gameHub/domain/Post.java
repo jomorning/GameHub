@@ -2,6 +2,8 @@ package com.gameHub.domain;
 
 import java.time.LocalDateTime;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class Post {
 	
 	private int postNo;
@@ -17,6 +19,9 @@ public class Post {
 	private int commentCount;
 	private LocalDateTime postCreatedAt;
 	private LocalDateTime postUpdatedAt;
+	
+	private MultipartFile savedFile;
+	private String savedFileName;
 	
 	public Post() {
 	}
@@ -123,6 +128,22 @@ public class Post {
 
 	public void setPostUpdatedAt(LocalDateTime postUpdatedAt) {
 		this.postUpdatedAt = postUpdatedAt;
+	}
+
+	public MultipartFile getSavedFile() {
+		return savedFile;
+	}
+
+	public void setSavedFile(MultipartFile savedFile) {
+		this.savedFile = savedFile;
+	}
+
+	public String getSavedFileName() {
+		return savedFileName;
+	}
+
+	public void setSavedFileName(String savedFileName) {
+		this.savedFileName = savedFileName;
 	}
 
 }

@@ -137,7 +137,16 @@ public class PostRepositoryImpl implements PostRepository {
 		String SQL = "INSERT INTO post(user_no, game_no, post_type, post_title, post_content) VALUES(?,?,?,?,?)";		
 		template.update(SQL, postForm.getUserNo(), postForm.getGameNo(), postForm.getPostType(), postForm.getPostTitle(), postForm.getPostContent());
 		String SQLforReturnPK = "SELECT LAST_INSERT_ID()";
-		Integer returnedPostNo = template.queryForObject(SQLforReturnPK, Integer.class);		
+		Integer returnedPostNo = template.queryForObject(SQLforReturnPK, Integer.class);
+		
+		if (postForm.getUploadedFileNameList() != null && !postForm.getUploadedFileNameList().isEmpty()) {
+			
+			for (int i = 0; i<postForm.getUploadedFileNameList().size(); i++) {
+				String SQL_i_f = "INSERT INTO image(reference_no, image_type, saved_name, file_path, sort_order) VALUES(?,?,?,?,?)";
+				template.update(SQL_i_f, returnedPostNo, "post", postForm.getUploadedFileNameList().get(i), "C:\\upload\\post\\", i);
+			}		
+		}
+		
 		return returnedPostNo;
 	}
 

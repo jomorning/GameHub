@@ -1,5 +1,9 @@
 package com.gameHub.domain;
 
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
+
 // newPost, newRecruit 을 위한 @ModelAttribute 용 객체 클래스임. (공통 게시판 폼 DTO)
 public class PostForm {
 	
@@ -14,6 +18,9 @@ public class PostForm {
 	private String recruitPosition;
 	private String recruitStatus;
 	private int recruitMaxMember;
+	
+	private List<MultipartFile> savedFileList;
+	private List<String> uploadedFileNameList;
 	
 	public PostForm() {
 	}
@@ -104,6 +111,22 @@ public class PostForm {
 
 	public void setRecruitMaxMember(int recruitMaxMember) {
 		this.recruitMaxMember = recruitMaxMember;
+	}
+
+	public List<MultipartFile> getSavedFileList() {
+		return savedFileList;
+	}
+
+	public void setSavedFileList(List<MultipartFile> savedFileList) {
+		this.savedFileList = savedFileList;
+	}
+
+	public List<String> getUploadedFileNameList() {
+		return uploadedFileNameList;
+	}
+
+	public void setUploadedFileNameList(List<String> uploadedFileNameList) {
+		this.uploadedFileNameList = uploadedFileNameList;
 	}
 
 }
