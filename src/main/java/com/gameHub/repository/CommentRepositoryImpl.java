@@ -35,6 +35,13 @@ public class CommentRepositoryImpl implements CommentRepository {
 	}
 
 	@Override
+	public CommentResponseDTO getLatestCommentByPost(int postNo) {
+		String SQL_s = "SELECT LAST_INSERT_ID FROM comment";
+		int latestCommentNo = template.queryForObject(SQL_s, Integer.class);
+		return latestCommentNo
+	}
+
+	@Override
 	public List<CommentResponseDTO> getCommentsByPost(int postNo) {
 		String SQL = "SELECT comment.comment_no, app_user.user_id, comment.comment_content, comment.comment_created_at, comment.comment_updated_at FROM comment JOIN post ON comment.post_no = post.post_no JOIN app_user ON comment.user_no = app_user.user_no WHERE post.post_no = ?";
 		List<CommentResponseDTO> commentsByPost = template.query(SQL, new JoinedCommentsRowMapper(), postNo);
@@ -61,7 +68,7 @@ public class CommentRepositoryImpl implements CommentRepository {
 	}
 
 	@Override
-	public void setDeleteComment(int commentNo) {
+	public int setDeleteComment(int commentNo) {
 		String SQL = "DELETE FROM comment WHERE comment_no = ?";
 		template.update(SQL, commentNo);
 	}

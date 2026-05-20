@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gameHub.domain.Comment;
+import com.gameHub.domain.CommentResponseDTO;
 import com.gameHub.exception.NoCommentFoundException;
 import com.gameHub.service.CommentService;
 
@@ -22,6 +25,13 @@ public class CommentController {
 	
 	@Autowired
 	CommentService commentService;
+	
+	@ResponseBody
+	@GetMapping("/post/{postNo}/comment/count")
+	public int getCommentCountByPost(@PathVariable("postNo") int postNo) {
+		int commentCountByPost = commentService.getCommentCountByPost(postNo);
+		return commentCountByPost;
+	}
 	
 	@GetMapping("/post/{postNo}/comment/{commentNo}")
 	public String getCommentByNo(@PathVariable("commentNo") int commentNo, Model model) {
@@ -41,12 +51,20 @@ public class CommentController {
 		return "post";
 	}
 	
+	@ResponseBody
 	@PostMapping("/post/{postNo}/comment")
-	public String submitNewCommentForm(@ModelAttribute("newComment") Comment newComment, @PathVariable("postNo") int postNo, Model model, HttpSession session) {
+	public CommentResponseDTO submitNewCommentForm(@RequestBody Comment newComment, @PathVariable("postNo") int postNo, Model model, HttpSession session) {
 		int loginUserNo = (Integer) session.getAttribute("loginUserNo");
 		newComment.setUserNo(loginUserNo);
+		newComment.setPostNo(postNo);
 		commentService.setNewComment(newComment);
-		return "redirect:/post/" + postNo;
+		
+		int commentCountByPost = commentService.getCommentCountByPost(postNo);
+		
+		CommentResponseDTO latestComment = commentService.getCommentByNo(latestComment);
+		
+		// return commentCountByPost;
+		return latestComment;
 	}
 	
 	@GetMapping("/post/{postNo}/comment/{commentNo}/edit")

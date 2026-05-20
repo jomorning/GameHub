@@ -9,6 +9,8 @@ public interface CommentRepository {
 	
 	Comment getCommentByNo(int commentNo);
 	
+	CommentResponseDTO getLatestCommentByPost(int postNo);
+	
 	List<CommentResponseDTO> getCommentsByPost(int postNo);
 	
 	int getCommentCountByPost(int postNo);

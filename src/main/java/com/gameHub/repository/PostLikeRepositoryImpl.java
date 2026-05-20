@@ -24,15 +24,19 @@ public class PostLikeRepositoryImpl implements PostLikeRepository {
 	}
 
 	@Override
-	public void setNewLike(int postNo, int userNo) {
+	public int setNewLike(int postNo, int userNo) {
 		String SQL = "INSERT INTO post_like(post_no, user_no) VALUES(?,?)";
-		template.update(SQL, postNo, userNo); 
+		template.update(SQL, postNo, userNo);
+		String SQL_s = "SELECT COUNT(*) FROM post_like WHERE post_no = ?";
+		return template.queryForObject(SQL_s, Integer.class, postNo);
 	}
 
 	@Override
-	public void setDeleteLike(int postNo, int userNo) {
+	public int setDeleteLike(int postNo, int userNo) {
 		String SQL = "DELETE FROM post_like WHERE post_no = ? AND user_no = ?";
 		template.update(SQL, postNo, userNo);
+		String SQL_s = "SELECT COUNT(*) FROM post_like WHERE post_no = ?";
+		return template.queryForObject(SQL_s, Integer.class, postNo);
 	}
 
 }

@@ -12,13 +12,13 @@ public class PostLikeServiceImpl implements PostLikeService {
 	PostLikeRepository postLikeRepository;
 	
 	@Override
-	public void setNewLike(int postNo, int userNo) {
-		postLikeRepository.setNewLike(postNo, userNo);
+	public int setNewLike(int postNo, int userNo) {
+		return postLikeRepository.setNewLike(postNo, userNo);
 	}
 
 	@Override
-	public void setDeleteLike(int postNo, int userNo) {
-		postLikeRepository.setDeleteLike(postNo, userNo);
+	public int setDeleteLike(int postNo, int userNo) {
+		return postLikeRepository.setDeleteLike(postNo, userNo);
 	}
 
 }

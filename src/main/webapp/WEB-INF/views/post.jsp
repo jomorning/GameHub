@@ -7,6 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <title>${postByNo.postTitle}</title>
 </head>
 <body>
@@ -22,34 +23,32 @@
 	<br>
 	게시글 수정: ${postByNo.postUpdatedAt}
 	<br>
-	댓글수: ${postByNo.commentCount} | 좋아요: ${postByNo.likeCount} | 조회수: ${postByNo.viewCount}
+	댓글수: <span id="commentCount">${postByNo.commentCount}</span> | 좋아요: <span id="likeCount">${postByNo.likeCount}</span> | 조회수: <span id="viewCount">${postByNo.viewCount}</span>
 	<hr>
 	${postByNo.postContent}
 	<hr>
 	
 	<c:url value="/post/${postByNo.postNo}/like" var="newLikeURL"/>
-	<form:form action="${newLikeURL}">
-		<button>좋아요</button>
-	</form:form>
-	
+	<button type="button" id="likeButton">좋아요</button>
+
 	<c:url value="/post/${postByNo.postNo}/like" var="deleteLikeURL"/>
-	<form:form action="${deleteLikeURL}" method="DELETE">
-		<button>좋아요 취소</button>
-	</form:form>
+	<button type="button" id="likeDropButton">좋아요 취소</button>
 	
 	<c:url value="/post/${postByNo.postNo}/apply" var="newApplyURL"/>
 	<form:form action="${newApplyURL}">
-		<button>참가하기</button>
+		<button type="button" id="applyButton">참가하기</button>
 	</form:form>
 	
 	<c:url value="/post/${postByNo.postNo}/apply/${applyByNo.userNo}" var="deleteApplyURL"/>
 	<form:form action="${deleteApplyURL}" method="DELETE">
-		<button>참가 취소</button>
+		<button type="button" id="applyDropButton">참가 취소</button>
 	</form:form>
 	
 	현재 인원: ${recruitByPost.recruitMaxMember}
+	현재 인원: <span id="recruitMaxMember"></span>
 	<br>
 	모집 인원: ${recruitByPost.recruitCurrentMember}
+	모집 인원: <span id="recruitCurrentMember"></span>
 	<hr>
 	
 	
@@ -91,14 +90,68 @@
 		
 	</c:forEach>
 	
-	<c:url value="/post/${postByNo.postNo}/comment" var="newCommentURL"/>
-	<form:form modelAttribute="newComment" action="${newCommentURL}">
-		<h4>댓글 등록하기</h4>
-		<form:textarea path="commentContent"/>
-		<button>댓글 등록</button>
-		
-		
-	</form:form>
+	<div id="commentArea">
 	
+	</div>
+	
+		<h4>댓글 등록하기</h4>
+		<input type="text" id="newCommentContent"/>
+		<button type="button" id="newCommentButton">댓글 등록</button>
+	
+	<c:url value="/post/${postByNo.postNo}/comment/count?${_csrf.parameterName}=${_csrf.token}" var="commentCountURL"/>
+	<c:url value="/post/${postByNo.postNo}/like?${_csrf.parameterName}=${_csrf.token}" var="newLikeURL"/>
+	<c:url value="/post/${postByNo.postNo}/like?${_csrf.parameterName}=${_csrf.token}" var="deleteLikeURL"/>
+	<c:url value="/post/${postByNo.postNo}/comment?${_csrf.parameterName}=${_csrf.token}" var="newCommentURL"/>
+	<script>
+	const commentCount = document.getElementById("commentCount");
+	const likeCount = document.getElementById("likeCount");
+	const viewCount = document.getElementById("viewCount");
+	const recruitMaxMember = document.getElementById("recruitMaxMember");
+	const recruitCurrentMember = document.getElementById("recruitCurrentMember");
+	const likeButton = document.getElementById("likeButton");
+	const likeDropButton = document.getElementById("likeDropButton");
+	const applyButton = document.getElementById("applyButton");
+	const applyDropButton = document.getElementById("applyDropButton");
+	const newCommentContent = document.getElementById("newCommentContent");
+	const newCommentButton = document.getElementById("newCommentButton");
+	const commentArea = document.getElementById("commentArea");
+	
+	likeButton.addEventListener("click", function() {
+		$.ajax({
+			url: "${newLikeURL}",
+			type: "POST",
+			success: function(likeCountByPost) {
+				likeCount.innerHTML = likeCountByPost;
+			}
+		});
+	});
+	
+	likeDropButton.addEventListener("click", function() {
+		$.ajax({
+			url: "${deleteLikeURL}",
+			type: "DELETE",
+			success: function(likeCountByPost) {
+				likeCount.innerHTML = likeCountByPost;
+			}
+		});
+	});
+	
+	newCommentButton.addEventListener("click", function() {
+		let newComment = { "commentContent": newCommentContent.value }
+		$.ajax({
+			url: "${newCommentURL}",
+			type: "POST",
+			contentType: "application/json",
+			data: JSON.stringify(newComment),
+			success: function(latestComment) {
+				
+				}
+				
+				
+				
+			}
+		});			
+	});
+	</script>
 </body>
 </html>

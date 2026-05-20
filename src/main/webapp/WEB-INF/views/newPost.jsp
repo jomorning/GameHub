@@ -35,7 +35,7 @@
 		<p>모집 인원: <form:input type="number" path="recruitMaxMember"/><br>
 		</div>
 		<br>
-		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+		<%-- <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> --%>
 		<button id="submitBtn">게시글 등록</button>
 	</form:form>
 	<c:url value="/upload/post/" var="uploadURL"/>
